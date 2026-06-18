@@ -600,7 +600,7 @@ function Hero({ triggerFormModal }: { triggerFormModal: (context: string) => voi
       <div className="absolute inset-0 grid-pattern opacity-50" />
       <div className="absolute inset-0 radial-glow" />
       <motion.div style={{ y, opacity }} className="relative mx-auto max-w-7xl px-5 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-14 items-center">
+        <div className="grid lg:grid-cols-2 gap-14 items-start">
           {/* Left */}
           <div>
             <Reveal>
@@ -670,7 +670,7 @@ function Hero({ triggerFormModal }: { triggerFormModal: (context: string) => voi
             </Reveal>
           </div>
 
-          {/* Right: device mockup */}
+          {/* Right: composite graphic */}
           <Reveal delay={0.2}>
             <HeroMockup />
           </Reveal>
@@ -682,183 +682,150 @@ function Hero({ triggerFormModal }: { triggerFormModal: (context: string) => voi
 
 function HeroMockup() {
   return (
-    <div className="relative mx-auto max-w-[420px]">
-      {/* floating badges */}
-      <motion.div
-        animate={{ y: [0, -12, 0] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute -left-8 top-16 z-20 hidden sm:block"
-      >
-        <div className="bg-white rounded-2xl shadow-premium px-4 py-3 flex items-center gap-3">
-          <div className="h-9 w-9 rounded-xl bg-[#22C55E]/15 grid place-items-center">
-            <PhoneCall size={16} className="text-[#22C55E]" />
+    <div className="relative mx-auto w-full max-w-[560px] lg:-mt-10">
+      {/* Background glow behind card for premium feel */}
+      <div className="absolute -inset-4 bg-yellow-gradient opacity-10 blur-3xl rounded-[2.5rem]" />
+
+      <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-start relative z-10">
+        {/* Left Part: Sanvitha's Portrait and Bio Details (Col span 7) */}
+        <div className="sm:col-span-7 flex flex-col">
+          {/* Portrait Image */}
+          <div className="relative rounded-3xl overflow-hidden border border-white/10 bg-slate-900/40 backdrop-blur-sm shadow-premium">
+            <img
+              src="/assets/Sanvitha.png"
+              alt="Bantaram Sanvitha"
+              className="w-full aspect-[4/5] object-cover transition-transform duration-500 hover:scale-[1.03]"
+            />
           </div>
-          <div>
-            <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">
-              Calls
+
+          {/* Details Card under the image */}
+          <div className="mt-4 bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-sm text-left">
+            <div className="flex items-center gap-1.5">
+              <div className="h-1.5 w-1.5 rounded-full bg-[#FFC400] animate-pulse" />
+              <span className="text-[8px] font-extrabold text-[#FFC400] uppercase tracking-[0.2em]">
+                GMB Specialist
+              </span>
             </div>
-            <div className="text-sm font-extrabold text-[#071B4D]">+220% this month</div>
+            <h4 className="mt-1 font-display font-extrabold text-white text-sm sm:text-base leading-tight">
+              Bantaram Sanvitha
+            </h4>
+            <p className="text-[9px] text-white/50 font-bold uppercase tracking-wider mt-0.5">
+              GMB SEO Specialist
+            </p>
+            <p className="mt-2 text-white/80 text-[10px] leading-relaxed">
+              With 5+ years of experience, I have helped 1,500+ business owners improve their Google Business Profiles, generate organic leads, and increase revenue through proven Local SEO strategies.
+            </p>
           </div>
         </div>
-      </motion.div>
 
-      <motion.div
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute -right-6 top-1/3 z-20 hidden sm:block"
-      >
-        <div className="bg-white rounded-2xl shadow-premium px-4 py-3">
-          <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">
-            Profile Strength
-          </div>
-          <div className="mt-1 flex items-center gap-2">
-            <div className="h-1.5 w-24 bg-slate-100 rounded-full overflow-hidden">
-              <motion.div
-                initial={{ width: 0 }}
-                whileInView={{ width: "94%" }}
-                viewport={{ once: true }}
-                transition={{ duration: 1.4, delay: 0.4 }}
-                className="h-full bg-yellow-gradient"
-              />
-            </div>
-            <span className="text-xs font-bold text-[#071B4D]">94%</span>
-          </div>
-        </div>
-      </motion.div>
-
-      <motion.div
-        animate={{ y: [0, -8, 0] }}
-        transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute -right-4 bottom-20 z-20 hidden sm:block"
-      >
-        <div className="bg-[#071B4D] rounded-2xl shadow-premium px-4 py-3 flex items-center gap-2 border border-white/10">
-          <Award size={16} className="text-[#FFC400]" />
-          <div>
-            <div className="text-[10px] font-semibold text-white/60 uppercase tracking-wider">
-              Local Rank
-            </div>
-            <div className="text-sm font-extrabold text-white">#1 in Area</div>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* phone */}
-      <motion.div
-        initial={{ rotateY: -15, rotateX: 8, scale: 0.9, opacity: 0 }}
-        whileInView={{ rotateY: -6, rotateX: 4, scale: 1, opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-        style={{ transformStyle: "preserve-3d", perspective: 1200 }}
-        className="relative"
-      >
-        <div className="relative rounded-[3rem] bg-[#0a0a0a] p-3 shadow-premium border border-white/10">
-          <div className="relative rounded-[2.5rem] bg-white overflow-hidden aspect-[9/19]">
-            {/* notch */}
-            <div className="absolute top-2 left-1/2 -translate-x-1/2 z-10 h-6 w-28 rounded-full bg-[#0a0a0a]" />
-            {/* GBP UI */}
-            <div className="px-4 pt-10 pb-4 h-full bg-gradient-to-b from-white to-[#F8FAFC]">
-              {/* business header */}
-              <div className="mt-4 flex items-center gap-3">
-                <div className="h-14 w-14 rounded-2xl bg-primary-gradient grid place-items-center shadow-premium">
-                  <span className="text-white font-display font-extrabold text-xl">I</span>
-                </div>
-                <div>
-                  <div className="font-display font-extrabold text-[#071B4D] text-[15px] leading-tight">
-                    IDM Smart Tech
+        {/* Right Part: Interactive Phone Mockup (Col span 5) - scaled down slightly */}
+        <div className="sm:col-span-5 flex justify-center origin-bottom-right scale-[0.9] sm:scale-100">
+          <motion.div
+            initial={{ rotateY: -10, rotateX: 6, scale: 0.9, opacity: 0 }}
+            whileInView={{ rotateY: -4, rotateX: 2, scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            style={{ transformStyle: "preserve-3d", perspective: 1200 }}
+            className="w-full max-w-[200px]"
+          >
+            <div className="relative rounded-[2rem] bg-[#0a0a0a] p-2 shadow-premium border border-white/10">
+              <div className="relative rounded-[1.6rem] bg-white overflow-hidden aspect-[9/19]">
+                {/* notch */}
+                <div className="absolute top-1 left-1/2 -translate-x-1/2 z-10 h-4 w-20 rounded-full bg-[#0a0a0a]" />
+                {/* GBP UI */}
+                <div className="px-2.5 pt-6 pb-2.5 h-full bg-gradient-to-b from-white to-[#F8FAFC] text-[8px] flex flex-col justify-between">
+                  {/* business header */}
+                  <div className="mt-1 flex items-center gap-1.5">
+                    <div className="h-7 w-7 rounded-lg bg-primary-gradient grid place-items-center shadow-premium shrink-0">
+                      <span className="text-white font-display font-extrabold text-xs">I</span>
+                    </div>
+                    <div>
+                      <div className="font-display font-extrabold text-[#071B4D] text-[9px] leading-tight">
+                        IDM Smart Tech
+                      </div>
+                      <div className="text-[6px] text-slate-400">Digital Marketing</div>
+                      <div className="flex items-center gap-0.5 mt-0.5">
+                        {[1, 2, 3, 4, 5].map((i) => (
+                          <Star key={i} size={5} className="fill-[#FFC400] text-[#FFC400]" />
+                        ))}
+                        <span className="text-[6px] font-bold text-[#071B4D] ml-0.5">4.9</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="text-[10px] text-slate-500 mt-0.5">Digital Marketing Agency</div>
-                  <div className="flex items-center gap-1 mt-1">
-                    {[1, 2, 3, 4, 5].map((i) => (
-                      <Star key={i} size={10} className="fill-[#FFC400] text-[#FFC400]" />
+
+                  {/* action chips */}
+                  <div className="mt-2 grid grid-cols-4 gap-0.5">
+                    {[
+                      { icon: PhoneCall, l: "Call" },
+                      { icon: MapPin, l: "Route" },
+                      { icon: Share2, l: "Share" },
+                      { icon: Search, l: "Site" },
+                    ].map((a) => (
+                      <div
+                        key={a.l}
+                        className="flex flex-col items-center gap-0.5 py-1 rounded bg-[#071B4D]/5 border border-[#071B4D]/10"
+                      >
+                        <a.icon size={7} className="text-[#0B2A75]" />
+                        <span className="text-[5px] font-semibold text-[#071B4D]">{a.l}</span>
+                      </div>
                     ))}
-                    <span className="text-[10px] font-bold text-[#071B4D] ml-1">4.9</span>
-                    <span className="text-[9px] text-slate-400">(312)</span>
                   </div>
-                </div>
-              </div>
 
-              {/* action chips */}
-              <div className="mt-4 grid grid-cols-4 gap-1.5">
-                {[
-                  { icon: PhoneCall, l: "Call" },
-                  { icon: MapPin, l: "Route" },
-                  { icon: Share2, l: "Share" },
-                  { icon: Search, l: "Site" },
-                ].map((a) => (
-                  <div
-                    key={a.l}
-                    className="flex flex-col items-center gap-1 py-2 rounded-xl bg-[#071B4D]/5 border border-[#071B4D]/10"
-                  >
-                    <a.icon size={14} className="text-[#0B2A75]" />
-                    <span className="text-[9px] font-semibold text-[#071B4D]">{a.l}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* metric cards */}
-              <div className="mt-4 grid grid-cols-2 gap-2">
-                <div className="rounded-xl bg-white border border-slate-100 p-2.5 shadow-sm">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[9px] text-slate-500 font-semibold uppercase">Views</span>
-                    <TrendingUp size={10} className="text-[#22C55E]" />
-                  </div>
-                  <div className="mt-1 font-display font-extrabold text-[#071B4D] text-lg">
-                    12.4K
-                  </div>
-                  <div className="text-[9px] text-[#22C55E] font-bold">+38% MoM</div>
-                </div>
-                <div className="rounded-xl bg-white border border-slate-100 p-2.5 shadow-sm">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[9px] text-slate-500 font-semibold uppercase">Calls</span>
-                    <PhoneCall size={10} className="text-[#22C55E]" />
-                  </div>
-                  <div className="mt-1 font-display font-extrabold text-[#071B4D] text-lg">847</div>
-                  <div className="text-[9px] text-[#22C55E] font-bold">+220% MoM</div>
-                </div>
-              </div>
-
-              {/* rank pill */}
-              <div className="mt-3 rounded-xl bg-primary-gradient p-3 text-white">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="text-[9px] uppercase tracking-wider opacity-70 font-semibold">
-                      Local Rank
+                  {/* metric cards */}
+                  <div className="mt-2 grid grid-cols-2 gap-1">
+                    <div className="rounded-lg bg-white border border-slate-100 p-1 shadow-sm">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[5px] text-slate-400 font-semibold uppercase">Views</span>
+                        <TrendingUp size={5} className="text-[#22C55E]" />
+                      </div>
+                      <div className="font-display font-extrabold text-[#071B4D] text-[9px] leading-none mt-0.5">12.4K</div>
+                      <div className="text-[5px] text-[#22C55E] font-bold mt-0.5">+38%</div>
                     </div>
-                    <div className="font-display font-extrabold text-lg leading-none mt-1">
-                      #1 of 47
+                    <div className="rounded-lg bg-white border border-slate-100 p-1 shadow-sm">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[5px] text-slate-400 font-semibold uppercase">Calls</span>
+                        <PhoneCall size={5} className="text-[#22C55E]" />
+                      </div>
+                      <div className="font-display font-extrabold text-[#071B4D] text-[9px] leading-none mt-0.5">847</div>
+                      <div className="text-[5px] text-[#22C55E] font-bold mt-0.5">+220%</div>
                     </div>
                   </div>
-                  <div className="h-9 w-9 rounded-full bg-yellow-gradient grid place-items-center">
-                    <Award size={16} className="text-[#071B4D]" />
-                  </div>
-                </div>
-              </div>
 
-              {/* mini chart */}
-              <div className="mt-3 rounded-xl bg-white border border-slate-100 p-2.5 shadow-sm">
-                <div className="flex items-center justify-between">
-                  <span className="text-[9px] font-semibold text-slate-500 uppercase">
-                    Customer Actions
-                  </span>
-                  <span className="text-[9px] font-bold text-[#22C55E]">+180%</span>
-                </div>
-                <div className="mt-2 flex items-end gap-1 h-12">
-                  {[40, 55, 38, 70, 60, 88, 95].map((h, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ height: 0 }}
-                      whileInView={{ height: `${h}%` }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.8, delay: 0.5 + i * 0.07 }}
-                      className="flex-1 bg-yellow-gradient rounded-sm"
-                    />
-                  ))}
+                  {/* rank pill */}
+                  <div className="mt-2 rounded-lg bg-primary-gradient p-1.5 text-white">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="text-[5px] uppercase opacity-75 font-semibold">Local Rank</div>
+                        <div className="font-display font-extrabold text-[8px] mt-0.5">#1 of 47</div>
+                      </div>
+                      <div className="h-5 w-5 rounded-full bg-yellow-gradient grid place-items-center">
+                        <Award size={8} className="text-[#071B4D]" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* mini chart */}
+                  <div className="mt-2 rounded-lg bg-white border border-slate-100 p-1 shadow-sm">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[5px] font-semibold text-slate-400 uppercase">Actions</span>
+                      <span className="text-[5px] font-bold text-[#22C55E]">+180%</span>
+                    </div>
+                    <div className="mt-1 flex items-end gap-0.5 h-5">
+                      {[40, 55, 38, 70, 60, 88, 95].map((h, i) => (
+                        <div
+                          key={i}
+                          style={{ height: `${h}%` }}
+                          className="flex-1 bg-yellow-gradient rounded-[1px]"
+                        />
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }
@@ -1283,159 +1250,235 @@ function Process() {
 
 /* ---------- Packages (Google Business Profile Services) ---------- */
 
-const ONETIME_SERVICES = [
+const GROWTH_PACKAGES = [
   {
-    id: "phone-verification",
-    title: "GMB PHONE VERIFICATION",
-    price: "₹10,000",
-    period: "Instant",
-    desc: "Perfect for businesses that need phone verification support quickly and safely.",
-    features: [
-      "Live Phone Number Within 24 Hours",
-      "Google Business Profile Verification",
-      "Dedicated Verification Support",
-      "1 Week Post-Verification Assistance",
-      "100% Safe & Google Policy-Compliant Process",
-      "Dedicated Account Manager",
-    ],
-    bestFor: "Businesses facing verification challenges or needing fast profile activation.",
-  },
-  {
-    id: "new-listing",
-    title: "GMB NEW LISTING",
-    price: "₹12,000",
-    period: "Same Day",
-    desc: "Launch your business on Google professionally and correctly.",
-    features: [
-      "New Google Business Profile Creation",
-      "Google Business Profile Verification",
-      "Complete Business Information Setup",
-      "Category Selection Optimization",
-      "Business Description Optimization",
-      "Contact Information Setup",
-      "1 Week Post-Setup Support",
-      "High Success Rate",
-      "Dedicated Account Manager",
-      "100% Google Policy-Compliant",
-    ],
-    bestFor: "New businesses or businesses not yet listed on Google.",
-  },
-  {
-    id: "profile-reinstatement",
-    title: "GMB PROFILE REINSTATEMENT",
-    price: "₹20,000",
-    period: "One Time",
-    desc: "Recover suspended or disabled Google Business Profiles.",
-    features: [
-      "Hard Suspension Recovery",
-      "Soft Suspension Recovery",
-      "Detailed Profile Audit",
-      "Policy Violation Investigation",
-      "Complete Issue Resolution",
-      "Google Reinstatement Appeal Submission",
-      "Communication Management with Google",
-      "High Profile Recovery Success Rate",
-      "Dedicated Support Team",
-    ],
-    bestFor: "Businesses whose Google Business Profile has been suspended or removed.",
-  },
-];
-
-const SEO_PLANS = [
-  {
-    id: "silver",
-    name: "SILVER PLAN",
-    price: "₹3,000",
-    period: "/ Month",
+    id: "starter",
+    name: "STARTER GROWTH PACKAGE",
+    price: "₹4,999",
+    period: "Month",
+    bestFor: "Best For: Businesses starting their Google Maps SEO journey.",
     badge: null,
-    desc: "Ideal for businesses starting local SEO.",
-    bestFor: "Small businesses starting their local visibility journey.",
     features: [
-      { label: "Improved Rankings On Google Maps", included: true },
-      { label: "Better Position On: ", value: "2-4 Keywords", included: true },
-      { label: "Google Posts Monthly: ", value: "15", included: true },
-      { label: "Results in: ", value: "2-3 Months", included: true },
-      { label: "GMB SEO Report: ", value: "Monthly 1", included: true },
-      { label: "Citation In Month: ", value: "100", included: true },
-      { label: "Backlink Dofollow: ", value: "15", included: true },
-      { label: "Local SEO Audit", included: false },
-      { label: "Review Reply Management", included: false },
-      { label: "Photo & Video Upload", included: false },
-      { label: "Competitor Analysis", included: false },
-      { label: "Priority Support", included: false },
+      {
+        category: "Google Business Profile Optimization",
+        items: [
+          "Complete Profile Optimization",
+          "100% Profile Strength Enhancement",
+          "Additional Category Optimization",
+          "WhatsApp & Call CTA Setup",
+          "Google Q&A Optimization",
+          "Product Listings Setup & Optimization",
+          "Service Listings Optimization",
+          "Business Information Accuracy Audit",
+        ],
+      },
+      {
+        category: "Local SEO & Keyword Research",
+        items: [
+          "Keyword Research",
+          "Competitor Analysis",
+          "Competitor Monitoring",
+          "Local Citation Building",
+        ],
+      },
+      {
+        category: "Content Marketing",
+        items: [
+          "12 SEO Blog Posts",
+          "Medium Publishing",
+          "Blogger Publishing",
+          "LinkedIn Publishing",
+          "Quora Promotion",
+        ],
+      },
+      {
+        category: "Authority Building",
+        items: [
+          "24 High Quality Backlinks",
+          "Local Brand Mentions",
+          "Citation Enhancement",
+        ],
+      },
+      {
+        category: "GMB Activity Management",
+        items: [
+          "Weekly GMB Posts",
+          "Weekly Photo Updates",
+          "Geo Tagged Uploads",
+          "Profile Freshness Optimization",
+        ],
+      },
+      {
+        category: "Reputation Management",
+        items: [
+          "Review Monitoring",
+          "Review Response Support",
+          "Customer Engagement Recommendations",
+        ],
+      },
+      {
+        category: "Reporting",
+        items: [
+          "Performance Report",
+          "Keyword Ranking Report",
+          "Maps Visibility Report",
+          "Traffic Insights",
+        ],
+      },
     ],
   },
   {
-    id: "gold",
-    name: "GOLD PLAN",
-    price: "₹4,000",
-    period: "/ Month",
+    id: "growth",
+    name: "GROWTH PACKAGE",
+    price: "₹6,999",
+    period: "Month",
+    bestFor: "Best For: Businesses wanting stronger local visibility and ranking improvements.",
+    badge: null,
+    parentPlus: "Everything in Starter Package PLUS",
+    features: [
+      {
+        category: "Advanced Local SEO",
+        items: [
+          "In-depth Keyword Research",
+          "Competitor Keyword Tracking",
+          "Apple Maps Optimization",
+          "Bing Maps Optimization",
+          "MapMyIndia Optimization",
+          "Yellow Pages Submission",
+          "Pinterest Local SEO Setup",
+        ],
+      },
+      {
+        category: "Social & Local Presence",
+        items: [
+          "Social Media Integration",
+          "Cross Platform Consistency",
+          "Local Visibility Enhancement",
+        ],
+      },
+      {
+        category: "Protection & Monitoring",
+        items: [
+          "Spam Listing Identification",
+          "Competitor Spam Reporting",
+          "Listing Health Monitoring",
+        ],
+      },
+      {
+        category: "Platforms Covered",
+        items: [
+          "Google Business Profile",
+          "Apple Maps",
+          "Bing Maps",
+          "MapMyIndia",
+          "Yellow Pages India",
+          "Pinterest Local SEO",
+        ],
+      },
+    ],
+  },
+  {
+    id: "ultimate",
+    name: "ULTIMATE GROWTH PACKAGE",
+    price: "₹9,999",
+    period: "Month",
+    bestFor: "Best For: Businesses wanting maximum local visibility and multi-platform authority.",
+    badge: null,
+    parentPlus: "Everything in Growth Package PLUS",
+    features: [
+      {
+        category: "Additional Business Listings",
+        items: [
+          "Click India",
+          "Sulekha",
+          "JustDial",
+        ],
+      },
+      {
+        category: "Strong Authority Building",
+        items: [
+          "Enhanced Citation Building",
+          "Strong Brand Signals",
+          "Higher Local Authority",
+        ],
+      },
+      {
+        category: "Social Media Integration",
+        items: [
+          "Facebook",
+          "Instagram",
+          "YouTube",
+          "Twitter",
+        ],
+      },
+      {
+        category: "Additional Benefits",
+        items: [
+          "Better Ranking Signals",
+          "More Trust",
+          "Improved Visibility",
+          "Increased Customer Reach",
+        ],
+      },
+    ],
+  },
+  {
+    id: "pro",
+    name: "PRO PLAN – GROWTH & LEADS GENERATION",
+    price: "₹16,999",
+    period: "Month",
+    bestFor: "Best For: Businesses focused on lead generation and aggressive growth.",
     badge: "MOST POPULAR",
-    desc: "Ideal for growing businesses seeking stronger visibility.",
-    bestFor: "Businesses looking for faster growth and increased local dominance.",
+    parentPlus: "Everything in Ultimate Package PLUS",
     features: [
-      { label: "Improved Rankings On Google Maps", included: true },
-      { label: "Better Position On: ", value: "4-7 Keywords", included: true },
-      { label: "Google Posts Monthly: ", value: "20", included: true },
-      { label: "Results in: ", value: "2-3 Months", included: true },
-      { label: "GMB SEO Report: ", value: "Monthly 2", included: true },
-      { label: "Citation In Month: ", value: "400", included: true },
-      { label: "Backlink Dofollow: ", value: "30", included: true },
-      { label: "Local SEO Audit", included: true },
-      { label: "Review Reply Management", included: false },
-      { label: "Photo & Video Upload", included: false },
-      { label: "Competitor Analysis", included: true },
-      { label: "Priority Support", included: true },
+      {
+        category: "Social Media Management",
+        items: [
+          "Facebook Management",
+          "Instagram Management",
+          "YouTube Management",
+          "Twitter/X Management",
+          "Content Planning",
+          "Regular Posting",
+          "Community Engagement",
+          "Hashtag Research",
+        ],
+      },
+      {
+        category: "Paid Ads & Lead Generation",
+        items: [
+          "Facebook Ads",
+          "Instagram Ads",
+          "Lead Generation Campaigns",
+          "Audience Research",
+          "High Converting Ad Creatives",
+          "Lead Forms",
+          "WhatsApp Lead Campaigns",
+          "Conversion Tracking",
+          "Monthly Ads Reports",
+        ],
+      },
+      {
+        category: "Additional Business Listings",
+        items: [
+          "Facebook Business Page",
+          "Instagram Business Profile",
+          "YouTube Channel Setup",
+          "Twitter Profile Optimization",
+        ],
+      },
+      {
+        category: "Expected Results",
+        items: [
+          "Quality Leads",
+          "More Enquiries",
+          "WhatsApp Leads",
+          "More Sales",
+          "Better Local Visibility",
+          "Higher Rankings",
+        ],
+      },
     ],
-  },
-  {
-    id: "platinum",
-    name: "PLATINUM PLAN",
-    price: "₹6,000",
-    period: "/ Month",
-    badge: "BEST VALUE",
-    desc: "For businesses serious about dominating local search results.",
-    bestFor: "Businesses aiming for aggressive local growth and market leadership.",
-    features: [
-      { label: "Improved Rankings On Google Maps", included: true },
-      { label: "Better Position On: ", value: "8-12 Keywords", included: true },
-      { label: "Google Posts Monthly: ", value: "30", included: true },
-      { label: "Results in: ", value: "1-2 Months", included: true },
-      { label: "GMB SEO Report: ", value: "Weekly", included: true },
-      { label: "Citation In Month: ", value: "1500", included: true },
-      { label: "Backlink Dofollow: ", value: "80", included: true },
-      { label: "Local SEO Audit", included: true },
-      { label: "Review Reply Management", included: true },
-      { label: "Photo & Video Upload", included: true },
-      { label: "Competitor Analysis", included: true },
-      { label: "Priority Support", included: true },
-    ],
-  },
-];
-
-const COMPARISON_FEATURES = [
-  {
-    name: "Keywords Targeted",
-    silver: "2–4 Keywords",
-    gold: "4–7 Keywords",
-    platinum: "8–12 Keywords",
-  },
-  { name: "Google Posts", silver: "15 Per Month", gold: "20 Per Month", platinum: "30 Per Month" },
-  { name: "Citations", silver: "100 Per Month", gold: "400 Per Month", platinum: "1500 Per Month" },
-  { name: "Backlinks", silver: "15 DoFollow", gold: "30 DoFollow", platinum: "80 DoFollow" },
-  {
-    name: "Reporting Frequency",
-    silver: "Monthly",
-    gold: "2 Monthly (Bi-weekly)",
-    platinum: "Weekly",
-  },
-  { name: "Competitor Analysis", silver: "Included", gold: "Included", platinum: "Included" },
-  { name: "Review Management", silver: "Included", gold: "Included", platinum: "Included" },
-  {
-    name: "Support Priority",
-    silver: "Priority Support",
-    gold: "Priority Support",
-    platinum: "Priority Support",
   },
 ];
 
@@ -1459,195 +1502,102 @@ function Packages({ triggerFormModal }: { triggerFormModal: (context: string) =>
           <span className="inline-flex items-center gap-2 text-[11px] font-bold tracking-[0.2em] text-[#0B2A75] uppercase">
             <span className="h-px w-8 bg-[#FFC400]" /> Packages
           </span>
-          <h2 className="mt-4 font-display font-extrabold text-[#071B4D] text-4xl lg:text-5xl">
-            GOOGLE BUSINESS PROFILE SERVICES
+          <h2 className="mt-4 font-display font-extrabold text-[#071B4D] text-4xl lg:text-5xl uppercase">
+            GOOGLE BUSINESS PROFILE GROWTH PACKAGES
           </h2>
           <p className="mt-3 font-display font-extrabold text-[#FFB000] text-xl">
-            Simple. Transparent. Result-Oriented Pricing.
+            Choose the Right Growth Package for Your Business
           </p>
           <p className="mt-5 text-slate-600 text-lg leading-relaxed">
-            We believe businesses deserve clear pricing with no hidden charges. Whether you need a
-            new Google Business Profile, verification support, profile recovery, or ongoing SEO
-            growth, IDM Smart Tech provides reliable solutions backed by expertise and proven
-            processes.
+            Whether you're just starting or looking for aggressive lead generation, our Google Business Profile growth packages help you rank higher, get more calls, generate leads, and grow your business.
           </p>
         </Reveal>
 
-        {/* ONE-TIME GMB SERVICES */}
-        <div className="mt-20">
-          <Reveal className="text-center max-w-2xl mx-auto mb-10">
-            <h3 className="font-display font-extrabold text-[#071B4D] text-3xl">
-              ONETIME GMB SERVICES
-            </h3>
-            <p className="mt-2 text-slate-600 font-medium">
-              One-Time Solutions for Immediate Business Needs
-            </p>
-          </Reveal>
-
+        {/* GROWTH PACKAGES GRID */}
+        <div className="mt-16">
           <Reveal className="max-w-7xl mx-auto">
-            <div className="grid md:grid-cols-3 gap-8 items-stretch mt-14">
-              {ONETIME_SERVICES.map((service) => {
-                return (
-                  <div
-                    key={service.id}
-                    className="relative rounded-3xl bg-[#071B4D] p-8 border border-slate-800 hover:border-[#FFC400]/40 shadow-premium transition-all duration-300 flex flex-col h-full text-white"
-                  >
-                    <div className="mb-6">
-                      <span className="text-[10px] font-extrabold tracking-widest text-[#FFC400] uppercase block mb-1 font-semibold">
-                        One-Time Service
-                      </span>
-                      <h4 className="font-display font-extrabold text-white text-2xl tracking-tight leading-snug">
-                        {service.title}
-                      </h4>
-                      <p className="mt-2 text-white/75 text-xs leading-relaxed min-h-[32px]">
-                        {service.desc}
-                      </p>
-                      <div className="mt-4 flex items-baseline gap-1">
-                        <span className="font-display font-black text-4xl text-[#FFC400]">
-                          {service.price}
-                        </span>
-                        <span className="text-white/60 text-xs font-semibold">
-                          / {service.period}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="border-t border-slate-800 pt-6 mb-8 flex-grow">
-                      <span className="text-xs uppercase tracking-wider text-[#FFC400] font-bold block mb-3">
-                        What's Included
-                      </span>
-                      <ul className="space-y-3">
-                        {service.features.map((feat) => (
-                          <li key={feat} className="flex items-start gap-2.5 text-sm">
-                            <Check size={16} className="text-[#FFC400] shrink-0 mt-0.5" />
-                            <span className="text-white/90 leading-snug">{feat}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <div className="mt-6 bg-white/5 border border-white/10 rounded-2xl p-4 mb-6">
-                      <span className="text-[10px] uppercase tracking-wider text-[#FFC400] font-bold block mb-1">
-                        Best For
-                      </span>
-                      <p className="text-white/95 text-xs font-medium">{service.bestFor}</p>
-                    </div>
-
-                    <div className="mt-auto pt-6 border-t border-slate-800 flex flex-col gap-2.5">
-                      <a
-                        href="tel:8519837818"
-                        className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-yellow-gradient text-[#071B4D] text-xs font-extrabold tracking-wider uppercase shadow-yellow hover:scale-[1.03] transition-transform cursor-pointer"
-                      >
-                        <Phone size={14} /> CALL NOW
-                      </a>
-                      <button
-                        onClick={() => triggerFormModal(`One-Time Service - ${service.title}`)}
-                        className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-white/10 text-white text-xs font-extrabold tracking-wider uppercase border border-white/20 hover:bg-white/15 hover:scale-[1.03] transition-transform cursor-pointer"
-                      >
-                        <MessageCircle size={14} className="text-[#22C55E]" /> WHATSAPP NOW
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </Reveal>
-        </div>
-
-        {/* GMB SEO PLANS */}
-        <div className="mt-28">
-          <Reveal className="text-center max-w-2xl mx-auto mb-14">
-            <h3 className="font-display font-extrabold text-[#071B4D] text-3xl">GMB SEO PLANS</h3>
-            <p className="mt-2 text-slate-600 font-medium">Monthly Growth Plans</p>
-            <p className="mt-2 text-slate-500 text-sm">
-              Let our Google Business Profile specialists help increase your visibility, rankings,
-              calls, and customer enquiries.
-            </p>
-          </Reveal>
-
-          <Reveal className="max-w-7xl mx-auto">
-            <div className="grid md:grid-cols-3 gap-8 items-stretch mt-14">
-              {SEO_PLANS.map((plan) => {
-                const isGold = plan.id === "gold";
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 items-stretch">
+              {GROWTH_PACKAGES.map((plan) => {
+                const isPro = plan.id === "pro";
                 return (
                   <div
                     key={plan.id}
-                    className={`relative rounded-3xl bg-white p-8 shadow-sm transition-all duration-300 flex flex-col ${
-                      isGold
-                        ? "border-2 border-blue-500 shadow-premium scale-[1.03]"
-                        : "border border-slate-200 hover:shadow-premium hover:border-[#FFC400]/40"
+                    className={`relative rounded-3xl p-6 shadow-sm transition-all duration-300 flex flex-col bg-[#071B4D] text-white border hover:border-[#FFC400]/40 ${
+                      isPro
+                        ? "border-2 border-[#FFC400] shadow-premium xl:scale-[1.03] shadow-yellow"
+                        : "border-slate-800 hover:shadow-premium"
                     }`}
                   >
                     {plan.badge && (
                       <span
-                        className={`absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-wider ${
-                          isGold
-                            ? "bg-[#FFC400] text-[#071B4D] shadow-yellow"
-                            : "bg-[#0B2A75] text-white"
-                        }`}
+                        className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-[#FFC400] text-[#071B4D] shadow-yellow"
                       >
                         {plan.badge}
                       </span>
                     )}
 
-                    <div className="mb-6">
-                      <span className="text-[10px] font-extrabold tracking-widest text-[#0B2A75] uppercase block mb-1">
-                        Monthly SEO Plan
+                    <div className="mb-4">
+                      <span className="text-[10px] font-extrabold tracking-widest uppercase block mb-1 text-[#FFC400]">
+                        Growth Package
                       </span>
-                      <h4 className="font-display font-extrabold text-[#071B4D] text-2xl">
+                      <h4 className="font-display font-extrabold text-xl sm:text-2xl leading-tight min-h-[56px] flex items-center text-white">
                         {plan.name}
                       </h4>
-                      <p className="mt-2 text-slate-500 text-xs leading-relaxed min-h-[32px]">
-                        {plan.desc}
-                      </p>
-                      <div className="mt-4 flex items-baseline gap-1">
-                        <span className="font-display font-black text-4xl text-[#071B4D]">
+                      <div className="mt-3 flex items-baseline gap-1">
+                        <span className="font-display font-black text-3xl sm:text-4xl text-[#FFC400]">
                           {plan.price}
                         </span>
-                        <span className="text-slate-400 text-xs font-semibold">{plan.period}</span>
+                        <span className="text-xs font-semibold text-white/60">
+                          / {plan.period}
+                        </span>
+                      </div>
+                      <p className="mt-3 text-xs leading-normal font-medium min-h-[36px] text-white/80">
+                        {plan.bestFor}
+                      </p>
+                    </div>
+
+                    <div className="border-t pt-4 mb-6 flex-grow flex flex-col border-slate-800">
+                      {plan.parentPlus && (
+                        <div className="mb-3 flex items-center gap-2 p-2 rounded-lg text-xs font-bold bg-white/5 text-[#FFC400]">
+                          <Sparkles size={12} className="shrink-0 animate-pulse" />
+                          <span>{plan.parentPlus}</span>
+                        </div>
+                      )}
+                      
+                      {/* Features List with custom scrollbar */}
+                      <div className="overflow-y-auto max-h-[300px] pr-1.5 space-y-3.5 scrollbar-thin scrollbar-thumb-slate-800">
+                        {plan.features.map((cat, idx) => (
+                          <div key={idx} className="space-y-1.5">
+                            <h5 className="text-[9px] font-black uppercase tracking-wider text-[#FFC400]/90 border-b border-white/5 pb-0.5">
+                              {cat.category}
+                            </h5>
+                            <ul className="space-y-1">
+                              {cat.items.map((item, itemIdx) => (
+                                <li key={itemIdx} className="flex items-start gap-1.5 text-[11px] leading-relaxed text-white/90">
+                                  <Check size={11} className="shrink-0 mt-0.5 text-[#FFC400]" strokeWidth={3} />
+                                  <span>{item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
                       </div>
                     </div>
 
-                    <div className="border-t border-slate-100 pt-6 mb-8 flex-grow">
-                      <ul className="space-y-3.5">
-                        {plan.features.map((f, i) => (
-                          <li key={i} className="flex items-start gap-3 text-sm text-slate-700">
-                            {f.included ? (
-                              <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-emerald-50 text-emerald-600 shrink-0 mt-0.5">
-                                <Check size={12} strokeWidth={3} />
-                              </span>
-                            ) : (
-                              <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-rose-50 text-rose-500 shrink-0 mt-0.5">
-                                <X size={12} strokeWidth={3} />
-                              </span>
-                            )}
-                            <span
-                              className={`text-sm leading-snug ${f.included ? "text-slate-700" : "text-slate-400"}`}
-                            >
-                              {f.label}
-                              {f.value && (
-                                <strong className="text-slate-800 font-bold">{f.value}</strong>
-                              )}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <div className="mt-auto pt-6 border-t border-slate-50 flex flex-col gap-2.5">
+                    <div className="mt-auto pt-4 border-t flex flex-col gap-2 border-slate-800">
                       <button
-                        onClick={() => triggerFormModal(`SEO Plan - ${plan.name} (Get Started)`)}
-                        className={`w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full text-xs font-bold tracking-wider uppercase transition-all ${
-                          isGold
-                            ? "bg-yellow-gradient text-[#071B4D] shadow-yellow hover:scale-[1.02] cursor-pointer"
-                            : "bg-[#071B4D] text-white hover:bg-[#0B2A75] cursor-pointer"
+                        onClick={() => triggerFormModal(`Growth Package - ${plan.name} (Get Started)`)}
+                        className={`w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full text-xs font-black tracking-wider uppercase transition-all duration-300 ${
+                          isPro
+                            ? "bg-yellow-gradient text-[#071B4D] shadow-yellow hover:scale-[1.03] cursor-pointer"
+                            : "bg-white text-[#071B4D] hover:bg-slate-100 hover:scale-[1.02] cursor-pointer"
                         }`}
                       >
                         GET STARTED
                       </button>
                       <button
-                        onClick={() => triggerFormModal(`SEO Plan - ${plan.name} (WhatsApp Now)`)}
-                        className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full border border-slate-200 text-[#071B4D] hover:bg-slate-50 text-xs font-bold tracking-wider uppercase transition-all cursor-pointer"
+                        onClick={() => triggerFormModal(`Growth Package - ${plan.name} (WhatsApp Now)`)}
+                        className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full border text-xs font-bold tracking-wider uppercase transition-all duration-300 cursor-pointer border-white/20 text-white bg-white/5 hover:bg-white/10"
                       >
                         <MessageCircle size={14} className="text-[#22C55E]" /> WHATSAPP NOW
                       </button>
@@ -1655,70 +1605,6 @@ function Packages({ triggerFormModal }: { triggerFormModal: (context: string) =>
                   </div>
                 );
               })}
-            </div>
-          </Reveal>
-        </div>
-
-        {/* COMPARISON TABLE */}
-        <div className="mt-28">
-          <Reveal className="text-center max-w-2xl mx-auto mb-10">
-            <h3 className="font-display font-extrabold text-[#071B4D] text-3xl">
-              COMPARISON TABLE
-            </h3>
-            <p className="mt-2 text-slate-600 font-medium">Compare GMB SEO features side-by-side</p>
-          </Reveal>
-
-          <Reveal className="max-w-5xl mx-auto">
-            <div className="rounded-3xl border border-slate-200 bg-white shadow-premium overflow-hidden">
-              <div className="overflow-x-auto">
-                <Table className="min-w-[700px] table-fixed">
-                  <TableHeader className="bg-slate-50">
-                    <TableRow className="border-b border-slate-200">
-                      <TableHead className="w-[220px] font-display font-extrabold text-[#071B4D] text-left p-5">
-                        Compare Features
-                      </TableHead>
-                      <TableHead className="w-[160px] font-display font-extrabold text-[#071B4D] text-center p-5">
-                        Silver
-                      </TableHead>
-                      <TableHead className="w-[160px] font-display font-extrabold text-[#071B4D] text-center p-5 bg-yellow-50/50 border-x border-[#FFC400]/20 relative">
-                        <div className="absolute top-0 inset-x-0 h-1 bg-[#FFC400]" />
-                        <span className="block mt-1">Gold</span>
-                        <span className="inline-block text-[8px] bg-[#FFC400] text-[#071B4D] px-1.5 py-0.5 rounded-full font-black uppercase mt-1">
-                          Most Popular
-                        </span>
-                      </TableHead>
-                      <TableHead className="w-[160px] font-display font-extrabold text-[#071B4D] text-center p-5 bg-blue-50/30 border-x border-slate-200/50 relative">
-                        <div className="absolute top-0 inset-x-0 h-1 bg-[#0B2A75]" />
-                        <span className="block mt-1">Platinum</span>
-                        <span className="inline-block text-[8px] bg-[#0B2A75] text-white px-1.5 py-0.5 rounded-full font-black uppercase mt-1">
-                          Best Value
-                        </span>
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {COMPARISON_FEATURES.map((feature) => (
-                      <TableRow
-                        key={feature.name}
-                        className="border-b border-slate-100 hover:bg-slate-50/50 transition-colors"
-                      >
-                        <TableCell className="font-semibold text-[#071B4D] p-4 pl-6 text-left">
-                          {feature.name}
-                        </TableCell>
-                        <TableCell className="text-center text-slate-600 p-4">
-                          {feature.silver}
-                        </TableCell>
-                        <TableCell className="text-center text-[#071B4D] font-bold p-4 bg-yellow-50/30 border-x border-[#FFC400]/10">
-                          {feature.gold}
-                        </TableCell>
-                        <TableCell className="text-center text-slate-700 font-medium p-4 bg-blue-50/10 border-x border-slate-200/30">
-                          {feature.platinum}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
             </div>
           </Reveal>
         </div>
