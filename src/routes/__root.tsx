@@ -78,21 +78,50 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "IDM Smart Tech — Your One-Stop Destination For All Things Digital" },
-      { name: "description", content: "Grow your business with Google Business Profile optimization, Local SEO, and lead generation. IDM Smart Tech is your digital growth partner." },
-      { property: "og:title", content: "IDM Smart Tech — Your One-Stop Destination For All Things Digital" },
-      { property: "og:description", content: "Grow your business with Google Business Profile optimization, Local SEO, and lead generation. IDM Smart Tech is your digital growth partner." },
+      {
+        name: "description",
+        content:
+          "Grow your business with Google Business Profile optimization, Local SEO, and lead generation. IDM Smart Tech is your digital growth partner.",
+      },
+      {
+        property: "og:title",
+        content: "IDM Smart Tech — Your One-Stop Destination For All Things Digital",
+      },
+      {
+        property: "og:description",
+        content:
+          "Grow your business with Google Business Profile optimization, Local SEO, and lead generation. IDM Smart Tech is your digital growth partner.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "IDM Smart Tech — Your One-Stop Destination For All Things Digital" },
-      { name: "twitter:description", content: "Grow your business with Google Business Profile optimization, Local SEO, and lead generation. IDM Smart Tech is your digital growth partner." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e053c923-250a-4b46-801f-8c8c8ea0fe33/id-preview-01049ac1--283d3ff7-6782-46c8-b0df-c45a180305a0.lovable.app-1781676544578.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e053c923-250a-4b46-801f-8c8c8ea0fe33/id-preview-01049ac1--283d3ff7-6782-46c8-b0df-c45a180305a0.lovable.app-1781676544578.png" },
+      {
+        name: "twitter:title",
+        content: "IDM Smart Tech — Your One-Stop Destination For All Things Digital",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "Grow your business with Google Business Profile optimization, Local SEO, and lead generation. IDM Smart Tech is your digital growth partner.",
+      },
+      {
+        property: "og:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e053c923-250a-4b46-801f-8c8c8ea0fe33/id-preview-01049ac1--283d3ff7-6782-46c8-b0df-c45a180305a0.lovable.app-1781676544578.png",
+      },
+      {
+        name: "twitter:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e053c923-250a-4b46-801f-8c8c8ea0fe33/id-preview-01049ac1--283d3ff7-6782-46c8-b0df-c45a180305a0.lovable.app-1781676544578.png",
+      },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap",
+      },
     ],
   }),
   shellComponent: RootShell,

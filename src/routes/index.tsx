@@ -41,6 +41,22 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -88,7 +104,15 @@ function Reveal({
   );
 }
 
-function Counter({ to, suffix = "", prefix = "" }: { to: number; suffix?: string; prefix?: string }) {
+function Counter({
+  to,
+  suffix = "",
+  prefix = "",
+}: {
+  to: number;
+  suffix?: string;
+  prefix?: string;
+}) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-50px" });
   const mv = useMotionValue(0);
@@ -114,21 +138,325 @@ function Counter({ to, suffix = "", prefix = "" }: { to: number; suffix?: string
 /* ---------- Page ---------- */
 
 function Index() {
+  const [isWhatsAppModalOpen, setIsWhatsAppModalOpen] = useState(false);
+  const [formContext, setFormContext] = useState("General Inquiry");
+  const [formData, setFormData] = useState({
+    businessName: "",
+    category: "",
+    address: "",
+    serviceAreas: "",
+    phoneNumber: "",
+    email: "",
+    website: "",
+    openingDate: "",
+    operatingHours: "",
+    businessDescription: "",
+    hasPhotos: false,
+    verificationMethod: "Video Verification",
+    currentLocation: "",
+  });
+  const [locationLoading, setLocationLoading] = useState(false);
+
+  const triggerFormModal = (context: string) => {
+    setFormContext(context);
+    setIsWhatsAppModalOpen(true);
+  };
+
+  const handleGetLocation = () => {
+    if (navigator.geolocation) {
+      setLocationLoading(true);
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setFormData((prev) => ({
+            ...prev,
+            currentLocation: `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`,
+          }));
+          setLocationLoading(false);
+        },
+        (error) => {
+          alert("Could not fetch location automatically. Please type it in manually.");
+          setLocationLoading(false);
+        },
+      );
+    } else {
+      alert("Geolocation is not supported by your browser.");
+    }
+  };
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const text = `*GMB Inquiry Details (${formContext})*
+
+Business Name: ${formData.businessName || "N/A"}
+Category: ${formData.category || "N/A"}
+Address: ${formData.address || "N/A"}
+Service Areas: ${formData.serviceAreas || "N/A"}
+Phone Number: ${formData.phoneNumber || "N/A"}
+Email: ${formData.email || "N/A"}
+Website: ${formData.website || "N/A"}
+Opening Date: ${formData.openingDate || "N/A"}
+Operating Hours: ${formData.operatingHours || "N/A"}
+Business Description: ${formData.businessDescription || "N/A"}
+Photos: ${formData.hasPhotos ? "Yes, files ready to attach in chat" : "No"}
+Verification Method: ${formData.verificationMethod || "N/A"}
+Current Location: ${formData.currentLocation || "N/A"}`;
+
+    const waUrl = `https://wa.me/918519837818?text=${encodeURIComponent(text)}`;
+    window.open(waUrl, "_blank");
+    setIsWhatsAppModalOpen(false);
+  };
+
   return (
     <div className="bg-white text-[#0f172a] overflow-x-hidden">
-      <Navbar />
-      <Hero />
+      <Navbar triggerFormModal={triggerFormModal} />
+      <Hero triggerFormModal={triggerFormModal} />
       <TrustBar />
       <WhoWeAre />
       <Services />
       <WhyUs />
       <Process />
-      <Packages />
+      <Packages triggerFormModal={triggerFormModal} />
       <Results />
       <Testimonials />
       <FAQSection />
-      <FinalCTA />
+      <FinalCTA triggerFormModal={triggerFormModal} />
       <Footer />
+
+      <Dialog open={isWhatsAppModalOpen} onOpenChange={setIsWhatsAppModalOpen}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white rounded-3xl border border-slate-200 p-8 shadow-xl">
+          <DialogHeader>
+            <DialogTitle className="font-display font-extrabold text-[#071B4D] text-2xl">
+              GMB New Account Required Details
+            </DialogTitle>
+            <DialogDescription className="text-slate-500 text-sm">
+              Inquiry Context: <strong className="text-[#0B2A75]">{formContext}</strong>. Please
+              fill out the details below. Once completed, click the button to send them directly to
+              our GMB specialists via WhatsApp.
+            </DialogDescription>
+          </DialogHeader>
+
+          <form onSubmit={handleFormSubmit} className="space-y-5 mt-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-[#071B4D] uppercase mb-1.5">
+                  Business Name *
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Acme Corporation"
+                  value={formData.businessName}
+                  onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
+                  className="w-full rounded-xl border border-slate-200 p-3 text-sm focus:outline-none focus:border-[#0B2A75] bg-slate-50 focus:bg-white transition-all text-[#071B4D]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-[#071B4D] uppercase mb-1.5">
+                  Category *
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Dental Clinic"
+                  value={formData.category}
+                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                  className="w-full rounded-xl border border-slate-200 p-3 text-sm focus:outline-none focus:border-[#0B2A75] bg-slate-50 focus:bg-white transition-all text-[#071B4D]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-[#071B4D] uppercase mb-1.5">
+                  Phone Number *
+                </label>
+                <input
+                  type="tel"
+                  required
+                  placeholder="e.g. 9876543210"
+                  value={formData.phoneNumber}
+                  onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
+                  className="w-full rounded-xl border border-slate-200 p-3 text-sm focus:outline-none focus:border-[#0B2A75] bg-slate-50 focus:bg-white transition-all text-[#071B4D]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-[#071B4D] uppercase mb-1.5">
+                  Email *
+                </label>
+                <input
+                  type="email"
+                  required
+                  placeholder="e.g. business@domain.com"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="w-full rounded-xl border border-slate-200 p-3 text-sm focus:outline-none focus:border-[#0B2A75] bg-slate-50 focus:bg-white transition-all text-[#071B4D]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-[#071B4D] uppercase mb-1.5">
+                  Website
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. www.acme.com"
+                  value={formData.website}
+                  onChange={(e) => setFormData({ ...formData, website: e.target.value })}
+                  className="w-full rounded-xl border border-slate-200 p-3 text-sm focus:outline-none focus:border-[#0B2A75] bg-slate-50 focus:bg-white transition-all text-[#071B4D]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-[#071B4D] uppercase mb-1.5">
+                  Opening Date
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. MM/DD/YYYY or Date"
+                  value={formData.openingDate}
+                  onChange={(e) => setFormData({ ...formData, openingDate: e.target.value })}
+                  className="w-full rounded-xl border border-slate-200 p-3 text-sm focus:outline-none focus:border-[#0B2A75] bg-slate-50 focus:bg-white transition-all text-[#071B4D]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-[#071B4D] uppercase mb-1.5">
+                  Service Areas *
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Shamshabad, Gachibowli"
+                  value={formData.serviceAreas}
+                  onChange={(e) => setFormData({ ...formData, serviceAreas: e.target.value })}
+                  className="w-full rounded-xl border border-slate-200 p-3 text-sm focus:outline-none focus:border-[#0B2A75] bg-slate-50 focus:bg-white transition-all text-[#071B4D]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-[#071B4D] uppercase mb-1.5">
+                  Operating Hours
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. 9 AM - 6 PM"
+                  value={formData.operatingHours}
+                  onChange={(e) => setFormData({ ...formData, operatingHours: e.target.value })}
+                  className="w-full rounded-xl border border-slate-200 p-3 text-sm focus:outline-none focus:border-[#0B2A75] bg-slate-50 focus:bg-white transition-all text-[#071B4D]"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-[#071B4D] uppercase mb-1.5">
+                Address *
+              </label>
+              <textarea
+                required
+                rows={2}
+                placeholder="Full physical street address of your business"
+                value={formData.address}
+                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                className="w-full rounded-xl border border-slate-200 p-3 text-sm focus:outline-none focus:border-[#0B2A75] bg-slate-50 focus:bg-white transition-all text-[#071B4D]"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-[#071B4D] uppercase mb-1.5">
+                Business Description (750 characters) *
+              </label>
+              <textarea
+                required
+                maxLength={750}
+                rows={3}
+                placeholder="Describe your business services, history, and goals (max 750 chars)..."
+                value={formData.businessDescription}
+                onChange={(e) => setFormData({ ...formData, businessDescription: e.target.value })}
+                className="w-full rounded-xl border border-slate-200 p-3 text-sm focus:outline-none focus:border-[#0B2A75] bg-slate-50 focus:bg-white transition-all text-[#071B4D]"
+              />
+              <span className="text-[10px] text-slate-400 block mt-1 text-right">
+                {formData.businessDescription.length}/750 characters
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-[#071B4D] uppercase mb-1.5">
+                  Verification Method
+                </label>
+                <select
+                  value={formData.verificationMethod}
+                  onChange={(e) => setFormData({ ...formData, verificationMethod: e.target.value })}
+                  className="w-full rounded-xl border border-slate-200 p-3 text-sm focus:outline-none focus:border-[#0B2A75] bg-slate-50 focus:bg-white transition-all text-[#071B4D]"
+                >
+                  <option value="Video Verification">Video Verification</option>
+                  <option value="Phone">Phone</option>
+                  <option value="Email">Email</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-[#071B4D] uppercase mb-1.5">
+                  Current Location
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="Coordinates or Address"
+                    value={formData.currentLocation}
+                    onChange={(e) => setFormData({ ...formData, currentLocation: e.target.value })}
+                    className="flex-grow rounded-xl border border-slate-200 p-3 text-sm focus:outline-none focus:border-[#0B2A75] bg-slate-50 focus:bg-white transition-all text-[#071B4D]"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleGetLocation}
+                    disabled={locationLoading}
+                    className="px-3 rounded-xl bg-slate-100 border border-slate-200 hover:bg-slate-200 text-[#071B4D] text-xs font-bold transition-all whitespace-nowrap cursor-pointer"
+                  >
+                    {locationLoading ? "Fetching..." : "Get Location"}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-slate-50 border border-slate-100 rounded-xl p-4 flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="hasPhotos"
+                checked={formData.hasPhotos}
+                onChange={(e) => setFormData({ ...formData, hasPhotos: e.target.checked })}
+                className="mt-1 h-4 w-4 rounded border-slate-300 text-[#0B2A75] focus:ring-[#0B2A75] cursor-pointer"
+              />
+              <label
+                htmlFor="hasPhotos"
+                className="text-xs text-slate-600 leading-normal cursor-pointer select-none"
+              >
+                <strong>Photos (Logo, Services, etc.): Attach files.</strong> By checking this box,
+                you confirm that you have business photos ready. Due to WhatsApp limits, you will
+                attach these photos directly in the WhatsApp chat.
+              </label>
+            </div>
+
+            <div className="pt-2 flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setIsWhatsAppModalOpen(false)}
+                className="px-5 py-3 rounded-full border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-bold tracking-wider uppercase transition-all cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-6 py-3 rounded-full bg-yellow-gradient text-[#071B4D] text-xs font-extrabold tracking-wider uppercase shadow-yellow hover:scale-[1.02] transition-transform cursor-pointer flex items-center gap-2"
+              >
+                <MessageCircle size={14} className="text-[#22C55E]" /> SEND VIA WHATSAPP
+              </button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
@@ -145,7 +473,7 @@ const NAV_LINKS = [
   { label: "Contact", href: "#contact" },
 ];
 
-function Navbar() {
+function Navbar({ triggerFormModal }: { triggerFormModal: (context: string) => void }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   useEffect(() => {
@@ -193,18 +521,18 @@ function Navbar() {
         </nav>
 
         <div className="hidden md:flex items-center gap-2.5">
-          <a
-            href="https://wa.me/919999999999"
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#22C55E]/15 border border-[#22C55E]/30 text-[#22C55E] text-sm font-semibold hover:bg-[#22C55E]/25 transition-all"
+          <button
+            onClick={() => triggerFormModal("General Inquiry (Navbar)")}
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#22C55E]/15 border border-[#22C55E]/30 text-[#22C55E] text-sm font-semibold hover:bg-[#22C55E]/25 transition-all cursor-pointer"
           >
             <MessageCircle size={16} /> WhatsApp
-          </a>
-          <a
-            href="#contact"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-yellow-gradient text-[#071B4D] text-sm font-bold shadow-yellow hover:scale-[1.03] transition-transform"
+          </button>
+          <button
+            onClick={() => triggerFormModal("Free Consultation Inquiry (Navbar)")}
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-yellow-gradient text-[#071B4D] text-sm font-bold shadow-yellow hover:scale-[1.03] transition-transform cursor-pointer"
           >
             Get Free Consultation <ArrowRight size={16} />
-          </a>
+          </button>
         </div>
 
         <button
@@ -235,12 +563,15 @@ function Navbar() {
                   {l.label}
                 </a>
               ))}
-              <a
-                href="#contact"
-                className="mt-2 text-center px-5 py-3 rounded-full bg-yellow-gradient text-[#071B4D] font-bold"
+              <button
+                onClick={() => {
+                  setOpen(false);
+                  triggerFormModal("Free Consultation Inquiry (Navbar Mobile)");
+                }}
+                className="mt-2 text-center px-5 py-3 rounded-full bg-yellow-gradient text-[#071B4D] font-bold cursor-pointer"
               >
                 Get Free Consultation
-              </a>
+              </button>
             </div>
           </motion.div>
         )}
@@ -251,7 +582,7 @@ function Navbar() {
 
 /* ---------- Hero ---------- */
 
-function Hero() {
+function Hero({ triggerFormModal }: { triggerFormModal: (context: string) => void }) {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [0, 120]);
@@ -316,22 +647,22 @@ function Hero() {
 
             <Reveal delay={0.3}>
               <div className="mt-9 flex flex-wrap gap-3">
-                <motion.a
+                <motion.button
                   whileHover={{ scale: 1.04 }}
                   whileTap={{ scale: 0.97 }}
-                  href="#contact"
-                  className="inline-flex items-center gap-2 px-7 py-4 rounded-full bg-yellow-gradient text-[#071B4D] font-bold text-sm tracking-wide shadow-yellow"
+                  onClick={() => triggerFormModal("Free Consultation Inquiry (Hero)")}
+                  className="inline-flex items-center gap-2 px-7 py-4 rounded-full bg-yellow-gradient text-[#071B4D] font-bold text-sm tracking-wide shadow-yellow cursor-pointer"
                 >
                   GET STARTED <ArrowRight size={16} />
-                </motion.a>
-                <motion.a
+                </motion.button>
+                <motion.button
                   whileHover={{ scale: 1.04 }}
                   whileTap={{ scale: 0.97 }}
-                  href="https://wa.me/919999999999"
-                  className="inline-flex items-center gap-2 px-7 py-4 rounded-full bg-white/5 border border-white/20 backdrop-blur text-white font-bold text-sm tracking-wide hover:bg-white/10"
+                  onClick={() => triggerFormModal("General Inquiry (Hero)")}
+                  className="inline-flex items-center gap-2 px-7 py-4 rounded-full bg-white/5 border border-white/20 backdrop-blur text-white font-bold text-sm tracking-wide hover:bg-white/10 cursor-pointer"
                 >
                   <MessageCircle size={16} className="text-[#22C55E]" /> CHAT ON WHATSAPP
-                </motion.a>
+                </motion.button>
               </div>
             </Reveal>
           </div>
@@ -574,8 +905,7 @@ function WhoWeAre() {
               <span className="h-px w-8 bg-[#FFC400]" /> Who We Are
             </span>
             <h2 className="mt-4 font-display font-extrabold text-[#071B4D] text-4xl lg:text-5xl leading-tight">
-              Your <span className="text-yellow-gradient">Growth Partner</span> In The Digital
-              World
+              Your <span className="text-yellow-gradient">Growth Partner</span> In The Digital World
             </h2>
             <p className="mt-6 text-slate-600 text-lg leading-relaxed">
               We don't just offer services — we build partnerships. At IDM Smart Tech, we step in as
@@ -880,7 +1210,9 @@ function Process() {
                   i % 2 ? "md:[&>:first-child]:order-2" : ""
                 }`}
               >
-                <div className={`pl-16 md:pl-0 ${i % 2 ? "md:text-left md:pl-12" : "md:text-right md:pr-12"}`}>
+                <div
+                  className={`pl-16 md:pl-0 ${i % 2 ? "md:text-left md:pl-12" : "md:text-right md:pr-12"}`}
+                >
                   <div className="text-yellow-gradient font-display font-extrabold text-5xl">
                     {s.n}
                   </div>
@@ -911,150 +1243,474 @@ function Process() {
 
 /* ---------- Packages ---------- */
 
-const PACKAGES = [
+/* ---------- Packages (Google Business Profile Services) ---------- */
+
+const ONETIME_SERVICES = [
   {
-    name: "Starter Growth",
-    price: "₹9,999",
-    period: "/ month",
-    badge: null as string | null,
-    desc: "Perfect for new local businesses ready to claim their online presence.",
+    id: "phone-verification",
+    title: "GMB PHONE VERIFICATION",
+    price: "₹10,000",
+    period: "Instant",
+    desc: "Perfect for businesses that need phone verification support quickly and safely.",
     features: [
-      "Google Business Profile setup & optimization",
-      "Local SEO foundations (5 keywords)",
-      "Monthly performance report",
-      "Review response management",
-      "WhatsApp support",
+      "Live Phone Number Within 24 Hours",
+      "Google Business Profile Verification",
+      "Dedicated Verification Support",
+      "1 Week Post-Verification Assistance",
+      "100% Safe & Google Policy-Compliant Process",
+      "Dedicated Account Manager",
     ],
+    bestFor: "Businesses facing verification challenges or needing fast profile activation.",
   },
   {
-    name: "Growth",
-    price: "₹19,999",
-    period: "/ month",
-    badge: "MOST POPULAR",
-    desc: "Built for growing businesses that need a steady stream of local leads.",
+    id: "new-listing",
+    title: "GMB NEW LISTING",
+    price: "₹12,000",
+    period: "Same Day",
+    desc: "Launch your business on Google professionally and correctly.",
     features: [
-      "Everything in Starter, plus:",
-      "Local SEO (15 keywords + citations)",
-      "Weekly GBP posts & content",
-      "Social media management (2 platforms)",
-      "Dedicated growth strategist",
-      "Bi-weekly strategy calls",
+      "New Google Business Profile Creation",
+      "Google Business Profile Verification",
+      "Complete Business Information Setup",
+      "Category Selection Optimization",
+      "Business Description Optimization",
+      "Contact Information Setup",
+      "1 Week Post-Setup Support",
+      "High Success Rate",
+      "Dedicated Account Manager",
+      "100% Google Policy-Compliant",
     ],
+    bestFor: "New businesses or businesses not yet listed on Google.",
   },
   {
-    name: "Ultimate Growth",
-    price: "₹39,999",
-    period: "/ month",
-    badge: "BEST VALUE",
-    desc: "Full-stack growth engine for ambitious businesses serious about scale.",
+    id: "profile-reinstatement",
+    title: "GMB PROFILE REINSTATEMENT",
+    price: "₹20,000",
+    period: "One Time",
+    desc: "Recover suspended or disabled Google Business Profiles.",
     features: [
-      "Everything in Growth, plus:",
-      "Aggressive local + national SEO",
-      "Paid ads management (Google + Meta)",
-      "Landing pages & CRO",
-      "Full social + content calendar",
-      "Lead generation system",
+      "Hard Suspension Recovery",
+      "Soft Suspension Recovery",
+      "Detailed Profile Audit",
+      "Policy Violation Investigation",
+      "Complete Issue Resolution",
+      "Google Reinstatement Appeal Submission",
+      "Communication Management with Google",
+      "High Profile Recovery Success Rate",
+      "Dedicated Support Team",
     ],
+    bestFor: "Businesses whose Google Business Profile has been suspended or removed.",
   },
+];
+
+const SEO_PLANS = [
   {
-    name: "Pro Growth & Leads",
-    price: "Custom",
-    period: "",
+    id: "silver",
+    name: "SILVER PLAN",
+    price: "₹3,000",
+    period: "/ Month",
     badge: null,
-    desc: "Tailored lead-generation programs with guaranteed pipeline targets.",
+    desc: "Ideal for businesses starting local SEO.",
+    bestFor: "Small businesses starting their local visibility journey.",
     features: [
-      "Custom lead targets & SLAs",
-      "Dedicated paid-ads strategist",
-      "CRM integration & automation",
-      "Sales enablement support",
-      "Quarterly business reviews",
+      { label: "Improved Rankings On Google Maps", included: true },
+      { label: "Better Position On: ", value: "2-4 Keywords", included: true },
+      { label: "Google Posts Monthly: ", value: "15", included: true },
+      { label: "Results in: ", value: "2-3 Months", included: true },
+      { label: "GMB SEO Report: ", value: "Monthly 1", included: true },
+      { label: "Citation In Month: ", value: "100", included: true },
+      { label: "Backlink Dofollow: ", value: "15", included: true },
+      { label: "Local SEO Audit", included: false },
+      { label: "Review Reply Management", included: false },
+      { label: "Photo & Video Upload", included: false },
+      { label: "Competitor Analysis", included: false },
+      { label: "Priority Support", included: false },
+    ],
+  },
+  {
+    id: "gold",
+    name: "GOLD PLAN",
+    price: "₹4,000",
+    period: "/ Month",
+    badge: "MOST POPULAR",
+    desc: "Ideal for growing businesses seeking stronger visibility.",
+    bestFor: "Businesses looking for faster growth and increased local dominance.",
+    features: [
+      { label: "Improved Rankings On Google Maps", included: true },
+      { label: "Better Position On: ", value: "4-7 Keywords", included: true },
+      { label: "Google Posts Monthly: ", value: "20", included: true },
+      { label: "Results in: ", value: "2-3 Months", included: true },
+      { label: "GMB SEO Report: ", value: "Monthly 2", included: true },
+      { label: "Citation In Month: ", value: "400", included: true },
+      { label: "Backlink Dofollow: ", value: "30", included: true },
+      { label: "Local SEO Audit", included: true },
+      { label: "Review Reply Management", included: false },
+      { label: "Photo & Video Upload", included: false },
+      { label: "Competitor Analysis", included: true },
+      { label: "Priority Support", included: true },
+    ],
+  },
+  {
+    id: "platinum",
+    name: "PLATINUM PLAN",
+    price: "₹6,000",
+    period: "/ Month",
+    badge: "BEST VALUE",
+    desc: "For businesses serious about dominating local search results.",
+    bestFor: "Businesses aiming for aggressive local growth and market leadership.",
+    features: [
+      { label: "Improved Rankings On Google Maps", included: true },
+      { label: "Better Position On: ", value: "8-12 Keywords", included: true },
+      { label: "Google Posts Monthly: ", value: "30", included: true },
+      { label: "Results in: ", value: "1-2 Months", included: true },
+      { label: "GMB SEO Report: ", value: "Weekly", included: true },
+      { label: "Citation In Month: ", value: "1500", included: true },
+      { label: "Backlink Dofollow: ", value: "80", included: true },
+      { label: "Local SEO Audit", included: true },
+      { label: "Review Reply Management", included: true },
+      { label: "Photo & Video Upload", included: true },
+      { label: "Competitor Analysis", included: true },
+      { label: "Priority Support", included: true },
     ],
   },
 ];
 
-function Packages() {
+const COMPARISON_FEATURES = [
+  {
+    name: "Keywords Targeted",
+    silver: "2–4 Keywords",
+    gold: "4–7 Keywords",
+    platinum: "8–12 Keywords",
+  },
+  { name: "Google Posts", silver: "15 Per Month", gold: "20 Per Month", platinum: "30 Per Month" },
+  { name: "Citations", silver: "100 Per Month", gold: "400 Per Month", platinum: "1500 Per Month" },
+  { name: "Backlinks", silver: "15 DoFollow", gold: "30 DoFollow", platinum: "80 DoFollow" },
+  {
+    name: "Reporting Frequency",
+    silver: "Monthly",
+    gold: "2 Monthly (Bi-weekly)",
+    platinum: "Weekly",
+  },
+  { name: "Competitor Analysis", silver: "Included", gold: "Included", platinum: "Included" },
+  { name: "Review Management", silver: "Included", gold: "Included", platinum: "Included" },
+  {
+    name: "Support Priority",
+    silver: "Priority Support",
+    gold: "Priority Support",
+    platinum: "Priority Support",
+  },
+];
+
+const TRUST_ITEMS = [
+  "Google Policy-Compliant Methods",
+  "Experienced GMB Specialists",
+  "Dedicated Account Manager",
+  "Transparent Reporting",
+  "High Success Rate",
+  "Proven Local SEO Strategies",
+  "Fast Support",
+  "No Hidden Charges",
+];
+
+function Packages({ triggerFormModal }: { triggerFormModal: (context: string) => void }) {
   return (
     <section id="packages" className="py-24 lg:py-32 bg-[#F8FAFC]">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
-        <Reveal className="text-center max-w-2xl mx-auto">
+        {/* Header Section */}
+        <Reveal className="text-center max-w-3xl mx-auto">
           <span className="inline-flex items-center gap-2 text-[11px] font-bold tracking-[0.2em] text-[#0B2A75] uppercase">
             <span className="h-px w-8 bg-[#FFC400]" /> Packages
           </span>
           <h2 className="mt-4 font-display font-extrabold text-[#071B4D] text-4xl lg:text-5xl">
-            Pricing Built For <span className="text-yellow-gradient">Every Stage</span>
+            GOOGLE BUSINESS PROFILE SERVICES
           </h2>
-          <p className="mt-5 text-slate-600 text-lg">
-            Transparent monthly pricing. No long-term contracts. Cancel anytime.
+          <p className="mt-3 font-display font-extrabold text-[#FFB000] text-xl">
+            Simple. Transparent. Result-Oriented Pricing.
+          </p>
+          <p className="mt-5 text-slate-600 text-lg leading-relaxed">
+            We believe businesses deserve clear pricing with no hidden charges. Whether you need a
+            new Google Business Profile, verification support, profile recovery, or ongoing SEO
+            growth, IDM Smart Tech provides reliable solutions backed by expertise and proven
+            processes.
           </p>
         </Reveal>
 
-        <div className="mt-14 grid lg:grid-cols-4 md:grid-cols-2 gap-5">
-          {PACKAGES.map((p, i) => {
-            const popular = p.badge === "MOST POPULAR";
-            return (
-              <motion.div
-                key={p.name}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.6, delay: i * 0.08 }}
-                whileHover={{ y: -10 }}
-                className={`relative rounded-3xl p-7 border transition-all ${
-                  popular
-                    ? "bg-primary-gradient text-white border-[#FFC400]/40 shadow-premium scale-[1.02]"
-                    : "bg-white text-[#071B4D] border-slate-200 hover:shadow-premium"
-                }`}
-              >
-                {p.badge && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-yellow-gradient text-[#071B4D] text-[10px] font-extrabold tracking-wider shadow-yellow">
-                    {p.badge}
+        {/* ONE-TIME GMB SERVICES */}
+        <div className="mt-20">
+          <Reveal className="text-center max-w-2xl mx-auto mb-10">
+            <h3 className="font-display font-extrabold text-[#071B4D] text-3xl">
+              ONETIME GMB SERVICES
+            </h3>
+            <p className="mt-2 text-slate-600 font-medium">
+              One-Time Solutions for Immediate Business Needs
+            </p>
+          </Reveal>
+
+          <Reveal className="max-w-7xl mx-auto">
+            <div className="grid md:grid-cols-3 gap-8 items-stretch mt-14">
+              {ONETIME_SERVICES.map((service) => {
+                return (
+                  <div
+                    key={service.id}
+                    className="relative rounded-3xl bg-[#071B4D] p-8 border border-slate-800 hover:border-[#FFC400]/40 shadow-premium transition-all duration-300 flex flex-col h-full text-white"
+                  >
+                    <div className="mb-6">
+                      <span className="text-[10px] font-extrabold tracking-widest text-[#FFC400] uppercase block mb-1 font-semibold">
+                        One-Time Service
+                      </span>
+                      <h4 className="font-display font-extrabold text-white text-2xl tracking-tight leading-snug">
+                        {service.title}
+                      </h4>
+                      <p className="mt-2 text-white/75 text-xs leading-relaxed min-h-[32px]">
+                        {service.desc}
+                      </p>
+                      <div className="mt-4 flex items-baseline gap-1">
+                        <span className="font-display font-black text-4xl text-[#FFC400]">
+                          {service.price}
+                        </span>
+                        <span className="text-white/60 text-xs font-semibold">
+                          / {service.period}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="border-t border-slate-800 pt-6 mb-8 flex-grow">
+                      <span className="text-xs uppercase tracking-wider text-[#FFC400] font-bold block mb-3">
+                        What's Included
+                      </span>
+                      <ul className="space-y-3">
+                        {service.features.map((feat) => (
+                          <li key={feat} className="flex items-start gap-2.5 text-sm">
+                            <Check size={16} className="text-[#FFC400] shrink-0 mt-0.5" />
+                            <span className="text-white/90 leading-snug">{feat}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className="mt-6 bg-white/5 border border-white/10 rounded-2xl p-4 mb-6">
+                      <span className="text-[10px] uppercase tracking-wider text-[#FFC400] font-bold block mb-1">
+                        Best For
+                      </span>
+                      <p className="text-white/95 text-xs font-medium">{service.bestFor}</p>
+                    </div>
+
+                    <div className="mt-auto pt-6 border-t border-slate-800 flex flex-col gap-2.5">
+                      <a
+                        href="tel:8519837818"
+                        className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-yellow-gradient text-[#071B4D] text-xs font-extrabold tracking-wider uppercase shadow-yellow hover:scale-[1.03] transition-transform cursor-pointer"
+                      >
+                        <Phone size={14} /> CALL NOW
+                      </a>
+                      <button
+                        onClick={() => triggerFormModal(`One-Time Service - ${service.title}`)}
+                        className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-white/10 text-white text-xs font-extrabold tracking-wider uppercase border border-white/20 hover:bg-white/15 hover:scale-[1.03] transition-transform cursor-pointer"
+                      >
+                        <MessageCircle size={14} className="text-[#22C55E]" /> WHATSAPP NOW
+                      </button>
+                    </div>
                   </div>
-                )}
-                <h3 className="font-display font-extrabold text-xl">{p.name}</h3>
-                <p
-                  className={`mt-2 text-sm leading-relaxed ${
-                    popular ? "text-white/70" : "text-slate-500"
-                  }`}
-                >
-                  {p.desc}
-                </p>
-                <div className="mt-5 flex items-baseline gap-1">
-                  <span
-                    className={`font-display font-extrabold text-4xl ${
-                      popular ? "text-yellow-gradient" : "text-yellow-gradient"
+                );
+              })}
+            </div>
+          </Reveal>
+        </div>
+
+        {/* GMB SEO PLANS */}
+        <div className="mt-28">
+          <Reveal className="text-center max-w-2xl mx-auto mb-14">
+            <h3 className="font-display font-extrabold text-[#071B4D] text-3xl">GMB SEO PLANS</h3>
+            <p className="mt-2 text-slate-600 font-medium">Monthly Growth Plans</p>
+            <p className="mt-2 text-slate-500 text-sm">
+              Let our Google Business Profile specialists help increase your visibility, rankings,
+              calls, and customer enquiries.
+            </p>
+          </Reveal>
+
+          <Reveal className="max-w-7xl mx-auto">
+            <div className="grid md:grid-cols-3 gap-8 items-stretch mt-14">
+              {SEO_PLANS.map((plan) => {
+                const isGold = plan.id === "gold";
+                return (
+                  <div
+                    key={plan.id}
+                    className={`relative rounded-3xl bg-white p-8 shadow-sm transition-all duration-300 flex flex-col ${
+                      isGold
+                        ? "border-2 border-blue-500 shadow-premium scale-[1.03]"
+                        : "border border-slate-200 hover:shadow-premium hover:border-[#FFC400]/40"
                     }`}
                   >
-                    {p.price}
-                  </span>
-                  <span className={`text-sm ${popular ? "text-white/60" : "text-slate-500"}`}>
-                    {p.period}
+                    {plan.badge && (
+                      <span
+                        className={`absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-wider ${
+                          isGold
+                            ? "bg-[#FFC400] text-[#071B4D] shadow-yellow"
+                            : "bg-[#0B2A75] text-white"
+                        }`}
+                      >
+                        {plan.badge}
+                      </span>
+                    )}
+
+                    <div className="mb-6">
+                      <span className="text-[10px] font-extrabold tracking-widest text-[#0B2A75] uppercase block mb-1">
+                        Monthly SEO Plan
+                      </span>
+                      <h4 className="font-display font-extrabold text-[#071B4D] text-2xl">
+                        {plan.name}
+                      </h4>
+                      <p className="mt-2 text-slate-500 text-xs leading-relaxed min-h-[32px]">
+                        {plan.desc}
+                      </p>
+                      <div className="mt-4 flex items-baseline gap-1">
+                        <span className="font-display font-black text-4xl text-[#071B4D]">
+                          {plan.price}
+                        </span>
+                        <span className="text-slate-400 text-xs font-semibold">{plan.period}</span>
+                      </div>
+                    </div>
+
+                    <div className="border-t border-slate-100 pt-6 mb-8 flex-grow">
+                      <ul className="space-y-3.5">
+                        {plan.features.map((f, i) => (
+                          <li key={i} className="flex items-start gap-3 text-sm text-slate-700">
+                            {f.included ? (
+                              <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-emerald-50 text-emerald-600 shrink-0 mt-0.5">
+                                <Check size={12} strokeWidth={3} />
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-rose-50 text-rose-500 shrink-0 mt-0.5">
+                                <X size={12} strokeWidth={3} />
+                              </span>
+                            )}
+                            <span
+                              className={`text-sm leading-snug ${f.included ? "text-slate-700" : "text-slate-400"}`}
+                            >
+                              {f.label}
+                              {f.value && (
+                                <strong className="text-slate-800 font-bold">{f.value}</strong>
+                              )}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className="mt-auto pt-6 border-t border-slate-50 flex flex-col gap-2.5">
+                      <button
+                        onClick={() => triggerFormModal(`SEO Plan - ${plan.name} (Get Started)`)}
+                        className={`w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full text-xs font-bold tracking-wider uppercase transition-all ${
+                          isGold
+                            ? "bg-yellow-gradient text-[#071B4D] shadow-yellow hover:scale-[1.02] cursor-pointer"
+                            : "bg-[#071B4D] text-white hover:bg-[#0B2A75] cursor-pointer"
+                        }`}
+                      >
+                        GET STARTED
+                      </button>
+                      <button
+                        onClick={() => triggerFormModal(`SEO Plan - ${plan.name} (WhatsApp Now)`)}
+                        className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full border border-slate-200 text-[#071B4D] hover:bg-slate-50 text-xs font-bold tracking-wider uppercase transition-all cursor-pointer"
+                      >
+                        <MessageCircle size={14} className="text-[#22C55E]" /> WHATSAPP NOW
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </Reveal>
+        </div>
+
+        {/* COMPARISON TABLE */}
+        <div className="mt-28">
+          <Reveal className="text-center max-w-2xl mx-auto mb-10">
+            <h3 className="font-display font-extrabold text-[#071B4D] text-3xl">
+              COMPARISON TABLE
+            </h3>
+            <p className="mt-2 text-slate-600 font-medium">Compare GMB SEO features side-by-side</p>
+          </Reveal>
+
+          <Reveal className="max-w-5xl mx-auto">
+            <div className="rounded-3xl border border-slate-200 bg-white shadow-premium overflow-hidden">
+              <div className="overflow-x-auto">
+                <Table className="min-w-[700px] table-fixed">
+                  <TableHeader className="bg-slate-50">
+                    <TableRow className="border-b border-slate-200">
+                      <TableHead className="w-[220px] font-display font-extrabold text-[#071B4D] text-left p-5">
+                        Compare Features
+                      </TableHead>
+                      <TableHead className="w-[160px] font-display font-extrabold text-[#071B4D] text-center p-5">
+                        Silver
+                      </TableHead>
+                      <TableHead className="w-[160px] font-display font-extrabold text-[#071B4D] text-center p-5 bg-yellow-50/50 border-x border-[#FFC400]/20 relative">
+                        <div className="absolute top-0 inset-x-0 h-1 bg-[#FFC400]" />
+                        <span className="block mt-1">Gold</span>
+                        <span className="inline-block text-[8px] bg-[#FFC400] text-[#071B4D] px-1.5 py-0.5 rounded-full font-black uppercase mt-1">
+                          Most Popular
+                        </span>
+                      </TableHead>
+                      <TableHead className="w-[160px] font-display font-extrabold text-[#071B4D] text-center p-5 bg-blue-50/30 border-x border-slate-200/50 relative">
+                        <div className="absolute top-0 inset-x-0 h-1 bg-[#0B2A75]" />
+                        <span className="block mt-1">Platinum</span>
+                        <span className="inline-block text-[8px] bg-[#0B2A75] text-white px-1.5 py-0.5 rounded-full font-black uppercase mt-1">
+                          Best Value
+                        </span>
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {COMPARISON_FEATURES.map((feature) => (
+                      <TableRow
+                        key={feature.name}
+                        className="border-b border-slate-100 hover:bg-slate-50/50 transition-colors"
+                      >
+                        <TableCell className="font-semibold text-[#071B4D] p-4 pl-6 text-left">
+                          {feature.name}
+                        </TableCell>
+                        <TableCell className="text-center text-slate-600 p-4">
+                          {feature.silver}
+                        </TableCell>
+                        <TableCell className="text-center text-[#071B4D] font-bold p-4 bg-yellow-50/30 border-x border-[#FFC400]/10">
+                          {feature.gold}
+                        </TableCell>
+                        <TableCell className="text-center text-slate-700 font-medium p-4 bg-blue-50/10 border-x border-slate-200/30">
+                          {feature.platinum}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+
+        {/* TRUST SECTION BELOW PLANS */}
+        <div className="mt-28 border-t border-slate-200/60 pt-20">
+          <Reveal className="text-center max-w-2xl mx-auto mb-12">
+            <h3 className="font-display font-extrabold text-[#071B4D] text-3xl">TRUST SECTION</h3>
+            <p className="mt-2 text-slate-600 font-medium">
+              Why Businesses Choose Our GMB Services
+            </p>
+          </Reveal>
+
+          <Reveal>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {TRUST_ITEMS.map((item) => (
+                <div
+                  key={item}
+                  className="flex items-center gap-4 bg-white border border-slate-100 rounded-2xl p-5 shadow-sm hover:shadow-premium hover:border-[#FFC400]/40 transition-all group"
+                >
+                  <div className="h-10 w-10 rounded-xl bg-yellow-gradient grid place-items-center shrink-0 shadow-yellow group-hover:rotate-3 transition-transform">
+                    <Check size={18} className="text-[#071B4D]" strokeWidth={3} />
+                  </div>
+                  <span className="font-display font-bold text-[#071B4D] text-sm leading-tight">
+                    {item}
                   </span>
                 </div>
-                <ul className="mt-6 space-y-2.5">
-                  {p.features.map((f) => (
-                    <li key={f} className="flex items-start gap-2.5 text-sm">
-                      <Check
-                        size={14}
-                        strokeWidth={3}
-                        className={popular ? "text-[#FFC400] mt-1 shrink-0" : "text-[#22C55E] mt-1 shrink-0"}
-                      />
-                      <span className={popular ? "text-white/90" : "text-slate-700"}>{f}</span>
-                    </li>
-                  ))}
-                </ul>
-                <a
-                  href="#contact"
-                  className={`mt-7 inline-flex w-full justify-center items-center gap-2 px-5 py-3 rounded-full text-sm font-bold transition-all ${
-                    popular
-                      ? "bg-yellow-gradient text-[#071B4D] shadow-yellow hover:scale-[1.02]"
-                      : "bg-[#071B4D] text-white hover:bg-[#0B2A75]"
-                  }`}
-                >
-                  Get Started <ArrowRight size={14} />
-                </a>
-              </motion.div>
-            );
-          })}
+              ))}
+            </div>
+          </Reveal>
         </div>
       </div>
     </section>
@@ -1291,7 +1947,23 @@ function FAQSection() {
 
 /* ---------- Final CTA ---------- */
 
-function FinalCTA() {
+function FinalCTA({ triggerFormModal }: { triggerFormModal: (context: string) => void }) {
+  const ctaContacts = [
+    { icon: Phone, l: "Call us", v: "8519837818", href: "tel:8519837818" },
+    {
+      icon: MessageCircle,
+      l: "WhatsApp",
+      v: "8519837818",
+      onClick: () => triggerFormModal("WhatsApp Contact (CTA)"),
+    },
+    {
+      icon: MapPin,
+      l: "Visit",
+      v: "Villa no-19, MRO Colony, Shamshabad, Hyderabad",
+      href: "https://maps.google.com/?q=Villa+no-19,+mro+colony,+H.no-+11-243/2,+railway+station+road,+opposite+ESI+dispensary,+Shamshabad,+Hyderabad,+Telangana+501218",
+    },
+  ];
+
   return (
     <section id="contact" className="py-20 lg:py-28 bg-[#F8FAFC]">
       <div className="mx-auto max-w-6xl px-5 lg:px-8">
@@ -1304,52 +1976,54 @@ function FinalCTA() {
               <div>
                 <Sparkles className="text-[#FFC400]" size={26} />
                 <h2 className="mt-4 font-display font-extrabold text-white text-4xl lg:text-6xl leading-[1.05]">
-                  Ready To <span className="text-yellow-gradient">Grow</span> Your Business?
+                  Ready To Improve Your Google Maps Rankings?
                 </h2>
                 <p className="mt-5 text-white/75 text-lg max-w-xl">
-                  Let's build your digital presence, generate qualified leads, and grow your
-                  revenue — starting with a free 30-minute strategy call.
+                  Get expert Google Business Profile support and start attracting more local
+                  customers.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-3">
-                  <motion.a
+                  <motion.button
                     whileHover={{ scale: 1.04 }}
                     whileTap={{ scale: 0.97 }}
-                    href="mailto:hello@idmsmarttech.com"
-                    className="inline-flex items-center gap-2 px-7 py-4 rounded-full bg-yellow-gradient text-[#071B4D] font-bold text-sm tracking-wide shadow-yellow"
+                    onClick={() => triggerFormModal("Book Free Consultation (CTA)")}
+                    className="inline-flex items-center gap-2 px-7 py-4 rounded-full bg-yellow-gradient text-[#071B4D] font-bold text-sm tracking-wide shadow-yellow cursor-pointer text-left"
                   >
-                    Get Free Consultation <ArrowRight size={16} />
-                  </motion.a>
-                  <motion.a
+                    BOOK FREE CONSULTATION <ArrowRight size={16} />
+                  </motion.button>
+                  <motion.button
                     whileHover={{ scale: 1.04 }}
                     whileTap={{ scale: 0.97 }}
-                    href="https://wa.me/919999999999"
-                    className="inline-flex items-center gap-2 px-7 py-4 rounded-full bg-white/10 border border-white/20 backdrop-blur text-white font-bold text-sm tracking-wide hover:bg-white/15"
+                    onClick={() => triggerFormModal("WhatsApp Inquiry (CTA)")}
+                    className="inline-flex items-center gap-2 px-7 py-4 rounded-full bg-white/10 border border-white/20 backdrop-blur text-white font-bold text-sm tracking-wide hover:bg-white/15 cursor-pointer text-left"
                   >
-                    <MessageCircle size={16} className="text-[#22C55E]" /> WhatsApp Now
-                  </motion.a>
+                    <MessageCircle size={16} className="text-[#22C55E]" /> WHATSAPP NOW
+                  </motion.button>
                 </div>
               </div>
               <div className="grid gap-3">
-                {[
-                  { icon: Phone, l: "Call us", v: "+91 99999 99999" },
-                  { icon: MessageCircle, l: "WhatsApp", v: "+91 99999 99999" },
-                  { icon: MapPin, l: "Visit", v: "Mumbai • Pune • Delhi NCR" },
-                ].map((c) => (
-                  <div
-                    key={c.l}
-                    className="flex items-center gap-4 rounded-2xl bg-white/[0.06] border border-white/10 backdrop-blur p-4"
-                  >
-                    <div className="h-11 w-11 rounded-xl bg-yellow-gradient grid place-items-center shrink-0">
-                      <c.icon size={18} className="text-[#071B4D]" />
-                    </div>
-                    <div>
-                      <div className="text-[10px] uppercase tracking-wider text-white/60 font-semibold">
-                        {c.l}
+                {ctaContacts.map((c) => {
+                  const isButton = !!c.onClick;
+                  const Component = isButton ? "button" : c.href ? "a" : "div";
+                  return (
+                    <Component
+                      key={c.l}
+                      href={!isButton ? c.href || undefined : undefined}
+                      onClick={c.onClick}
+                      className="flex items-center text-left w-full gap-4 rounded-2xl bg-white/[0.06] border border-white/10 backdrop-blur p-4 hover:bg-white/[0.1] transition-all cursor-pointer"
+                    >
+                      <div className="h-11 w-11 rounded-xl bg-yellow-gradient grid place-items-center shrink-0">
+                        <c.icon size={18} className="text-[#071B4D]" />
                       </div>
-                      <div className="text-white font-bold">{c.v}</div>
-                    </div>
-                  </div>
-                ))}
+                      <div>
+                        <div className="text-[10px] uppercase tracking-wider text-white/60 font-semibold">
+                          {c.l}
+                        </div>
+                        <div className="text-white font-bold">{c.v}</div>
+                      </div>
+                    </Component>
+                  );
+                })}
               </div>
             </div>
           </div>
