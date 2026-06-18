@@ -682,148 +682,37 @@ function Hero({ triggerFormModal }: { triggerFormModal: (context: string) => voi
 
 function HeroMockup() {
   return (
-    <div className="relative mx-auto w-full max-w-[560px] lg:-mt-10">
+    <div className="relative mx-auto lg:ml-auto w-full max-w-[380px] lg:-mt-10">
       {/* Background glow behind card for premium feel */}
       <div className="absolute -inset-4 bg-yellow-gradient opacity-10 blur-3xl rounded-[2.5rem]" />
 
-      <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-start relative z-10">
-        {/* Left Part: Sanvitha's Portrait and Bio Details (Col span 7) */}
-        <div className="sm:col-span-7 flex flex-col">
-          {/* Portrait Image */}
-          <div className="relative rounded-3xl overflow-hidden border border-white/10 bg-slate-900/40 backdrop-blur-sm shadow-premium">
-            <img
-              src="/assets/Sanvitha.png"
-              alt="Bantaram Sanvitha"
-              className="w-full aspect-[4/5] object-cover transition-transform duration-500 hover:scale-[1.03]"
-            />
-          </div>
-
-          {/* Details Card under the image */}
-          <div className="mt-4 bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-sm text-left">
-            <div className="flex items-center gap-1.5">
-              <div className="h-1.5 w-1.5 rounded-full bg-[#FFC400] animate-pulse" />
-              <span className="text-[8px] font-extrabold text-[#FFC400] uppercase tracking-[0.2em]">
-                GMB Specialist
-              </span>
-            </div>
-            <h4 className="mt-1 font-display font-extrabold text-white text-sm sm:text-base leading-tight">
-              Bantaram Sanvitha
-            </h4>
-            <p className="text-[9px] text-white/50 font-bold uppercase tracking-wider mt-0.5">
-              GMB SEO Specialist
-            </p>
-            <p className="mt-2 text-white/80 text-[10px] leading-relaxed">
-              With 5+ years of experience, I have helped 1,500+ business owners improve their Google Business Profiles, generate organic leads, and increase revenue through proven Local SEO strategies.
-            </p>
-          </div>
+      <div className="flex flex-col relative z-10">
+        {/* Portrait Image */}
+        <div className="relative rounded-3xl overflow-hidden border border-white/20 bg-white shadow-premium">
+          <img
+            src="/assets/Sanvitha.png"
+            alt="Bantaram Sanvitha"
+            className="w-full aspect-[4/5] object-cover transition-transform duration-500 hover:scale-[1.03]"
+          />
         </div>
 
-        {/* Right Part: Interactive Phone Mockup (Col span 5) - scaled down slightly */}
-        <div className="sm:col-span-5 flex justify-center origin-bottom-right scale-[0.9] sm:scale-100">
-          <motion.div
-            initial={{ rotateY: -10, rotateX: 6, scale: 0.9, opacity: 0 }}
-            whileInView={{ rotateY: -4, rotateX: 2, scale: 1, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            style={{ transformStyle: "preserve-3d", perspective: 1200 }}
-            className="w-full max-w-[200px]"
-          >
-            <div className="relative rounded-[2rem] bg-[#0a0a0a] p-2 shadow-premium border border-white/10">
-              <div className="relative rounded-[1.6rem] bg-white overflow-hidden aspect-[9/19]">
-                {/* notch */}
-                <div className="absolute top-1 left-1/2 -translate-x-1/2 z-10 h-4 w-20 rounded-full bg-[#0a0a0a]" />
-                {/* GBP UI */}
-                <div className="px-2.5 pt-6 pb-2.5 h-full bg-gradient-to-b from-white to-[#F8FAFC] text-[8px] flex flex-col justify-between">
-                  {/* business header */}
-                  <div className="mt-1 flex items-center gap-1.5">
-                    <div className="h-7 w-7 rounded-lg bg-primary-gradient grid place-items-center shadow-premium shrink-0">
-                      <span className="text-white font-display font-extrabold text-xs">I</span>
-                    </div>
-                    <div>
-                      <div className="font-display font-extrabold text-[#071B4D] text-[9px] leading-tight">
-                        IDM Smart Tech
-                      </div>
-                      <div className="text-[6px] text-slate-400">Digital Marketing</div>
-                      <div className="flex items-center gap-0.5 mt-0.5">
-                        {[1, 2, 3, 4, 5].map((i) => (
-                          <Star key={i} size={5} className="fill-[#FFC400] text-[#FFC400]" />
-                        ))}
-                        <span className="text-[6px] font-bold text-[#071B4D] ml-0.5">4.9</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* action chips */}
-                  <div className="mt-2 grid grid-cols-4 gap-0.5">
-                    {[
-                      { icon: PhoneCall, l: "Call" },
-                      { icon: MapPin, l: "Route" },
-                      { icon: Share2, l: "Share" },
-                      { icon: Search, l: "Site" },
-                    ].map((a) => (
-                      <div
-                        key={a.l}
-                        className="flex flex-col items-center gap-0.5 py-1 rounded bg-[#071B4D]/5 border border-[#071B4D]/10"
-                      >
-                        <a.icon size={7} className="text-[#0B2A75]" />
-                        <span className="text-[5px] font-semibold text-[#071B4D]">{a.l}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* metric cards */}
-                  <div className="mt-2 grid grid-cols-2 gap-1">
-                    <div className="rounded-lg bg-white border border-slate-100 p-1 shadow-sm">
-                      <div className="flex items-center justify-between">
-                        <span className="text-[5px] text-slate-400 font-semibold uppercase">Views</span>
-                        <TrendingUp size={5} className="text-[#22C55E]" />
-                      </div>
-                      <div className="font-display font-extrabold text-[#071B4D] text-[9px] leading-none mt-0.5">12.4K</div>
-                      <div className="text-[5px] text-[#22C55E] font-bold mt-0.5">+38%</div>
-                    </div>
-                    <div className="rounded-lg bg-white border border-slate-100 p-1 shadow-sm">
-                      <div className="flex items-center justify-between">
-                        <span className="text-[5px] text-slate-400 font-semibold uppercase">Calls</span>
-                        <PhoneCall size={5} className="text-[#22C55E]" />
-                      </div>
-                      <div className="font-display font-extrabold text-[#071B4D] text-[9px] leading-none mt-0.5">847</div>
-                      <div className="text-[5px] text-[#22C55E] font-bold mt-0.5">+220%</div>
-                    </div>
-                  </div>
-
-                  {/* rank pill */}
-                  <div className="mt-2 rounded-lg bg-primary-gradient p-1.5 text-white">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <div className="text-[5px] uppercase opacity-75 font-semibold">Local Rank</div>
-                        <div className="font-display font-extrabold text-[8px] mt-0.5">#1 of 47</div>
-                      </div>
-                      <div className="h-5 w-5 rounded-full bg-yellow-gradient grid place-items-center">
-                        <Award size={8} className="text-[#071B4D]" />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* mini chart */}
-                  <div className="mt-2 rounded-lg bg-white border border-slate-100 p-1 shadow-sm">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[5px] font-semibold text-slate-400 uppercase">Actions</span>
-                      <span className="text-[5px] font-bold text-[#22C55E]">+180%</span>
-                    </div>
-                    <div className="mt-1 flex items-end gap-0.5 h-5">
-                      {[40, 55, 38, 70, 60, 88, 95].map((h, i) => (
-                        <div
-                          key={i}
-                          style={{ height: `${h}%` }}
-                          className="flex-1 bg-yellow-gradient rounded-[1px]"
-                        />
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
+        {/* Details Card under the image */}
+        <div className="mt-4 bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-sm text-left">
+          <div className="flex items-center gap-1.5">
+            <div className="h-1.5 w-1.5 rounded-full bg-[#FFC400] animate-pulse" />
+            <span className="text-[8px] font-extrabold text-[#FFC400] uppercase tracking-[0.2em]">
+              GMB Specialist
+            </span>
+          </div>
+          <h4 className="mt-1 font-display font-extrabold text-white text-sm sm:text-base leading-tight">
+            Bantaram Sanvitha
+          </h4>
+          <p className="text-[9px] text-white/50 font-bold uppercase tracking-wider mt-0.5">
+            GMB SEO Specialist
+          </p>
+          <p className="mt-2 text-white/80 text-[10px] leading-relaxed">
+            With 5+ years of experience, I have helped 1,500+ business owners improve their Google Business Profiles, generate organic leads, and increase revenue through proven Local SEO strategies.
+          </p>
         </div>
       </div>
     </div>
