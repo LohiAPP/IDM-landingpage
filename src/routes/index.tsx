@@ -691,7 +691,7 @@ function HeroMockup() {
         <div className="relative rounded-3xl overflow-hidden border border-white/20 bg-white shadow-premium">
           <img
             src="/assets/Sanvitha.png"
-            alt="Bantaram Sanvitha"
+            alt="Bantaram Sanvika"
             className="w-full aspect-[4/5] object-cover transition-transform duration-500 hover:scale-[1.03]"
           />
         </div>
@@ -705,7 +705,7 @@ function HeroMockup() {
             </span>
           </div>
           <h4 className="mt-1 font-display font-extrabold text-white text-sm sm:text-base leading-tight">
-            Bantaram Sanvitha
+            Bantaram Sanvika
           </h4>
           <p className="text-[9px] text-white/50 font-bold uppercase tracking-wider mt-0.5">
             GMB SEO Specialist
