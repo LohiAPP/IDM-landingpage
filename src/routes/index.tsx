@@ -34,6 +34,9 @@ import {
   Menu,
   PhoneCall,
   BarChart3,
+  Video,
+  RefreshCw,
+  PlusCircle,
 } from "lucide-react";
 import {
   Accordion,
@@ -214,7 +217,7 @@ Current Location: ${formData.currentLocation || "N/A"}`;
       <Hero triggerFormModal={triggerFormModal} />
       <TrustBar />
       <WhoWeAre />
-      <Services />
+      <Services triggerFormModal={triggerFormModal} />
       <WhyUs />
       <Process />
       <Packages triggerFormModal={triggerFormModal} />
@@ -973,91 +976,126 @@ function WhoWeAre() {
   );
 }
 
-/* ---------- Services ---------- */
+/* ---------- Services (Quick GMB Services) ---------- */
 
-const SERVICES = [
+const QUICK_SERVICES = [
   {
-    icon: MapPin,
-    title: "Google Business Profile Optimization",
-    desc: "Rank in the Map Pack, fully optimized listings, posts, photos, and review management.",
+    icon: Video,
+    title: "VIDEO VERIFICATION",
+    price: "Starting From ₹2,999",
+    features: [
+      "Google-Compliant Process",
+      "Professional Verification Support",
+      "Better Approval Chances",
+      "Support Until Verified",
+    ],
   },
   {
-    icon: Search,
-    title: "Local SEO",
-    desc: "Geo-targeted SEO that brings high-intent local customers straight to your business.",
+    icon: RefreshCw,
+    title: "GMB PROFILE REINSTATEMENT",
+    price: "Starting From ₹2,999",
+    features: [
+      "Suspension Analysis",
+      "Policy Issue Resolution",
+      "Appeal Submission",
+      "Profile Recovery Assistance",
+    ],
   },
   {
-    icon: Megaphone,
-    title: "Digital Marketing",
-    desc: "End-to-end strategy across SEO, content, email, and performance marketing.",
+    icon: PlusCircle,
+    title: "NEW GMB PROFILE CREATION",
+    price: "Starting From ₹4,000",
+    features: [
+      "Complete Profile Setup",
+      "Profile Optimization",
+      "Category Setup",
+      "Ranking Foundation",
+    ],
   },
   {
-    icon: Share2,
-    title: "Social Media Marketing",
-    desc: "On-brand content, community growth, and engagement that converts followers to buyers.",
-  },
-  {
-    icon: Target,
-    title: "Paid Advertising",
-    desc: "High-ROAS Google and Meta ads, optimized weekly for cost-per-lead and revenue.",
-  },
-  {
-    icon: Users,
-    title: "Lead Generation",
-    desc: "Predictable inbound and outbound lead systems built around your sales process.",
-  },
-  {
-    icon: Briefcase,
-    title: "Business Consulting",
-    desc: "Growth roadmaps, pricing, positioning, and operations advice from senior strategists.",
-  },
-  {
-    icon: FileText,
-    title: "Taxation & Registration",
-    desc: "GST, MSME, company registration, and compliance — handled end-to-end by experts.",
+    icon: PhoneCall,
+    title: "GMB NUMBER UPDATE",
+    price: "Starting From ₹2,999",
+    features: [
+      "Business Number Update",
+      "WhatsApp Catalogue Setup",
+      "Business Information Optimization",
+      "Better Local Visibility",
+    ],
   },
 ];
 
-function Services() {
+function Services({ triggerFormModal }: { triggerFormModal: (context: string) => void }) {
   return (
     <section id="services" className="py-24 lg:py-32 bg-[#F8FAFC] relative overflow-hidden">
       <div className="absolute top-0 right-0 w-96 h-96 bg-[#FFC400]/10 rounded-full blur-3xl" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#0B2A75]/10 rounded-full blur-3xl" />
       <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
-        <Reveal className="text-center max-w-2xl mx-auto">
+        <Reveal className="text-center max-w-3xl mx-auto">
           <span className="inline-flex items-center gap-2 text-[11px] font-bold tracking-[0.2em] text-[#0B2A75] uppercase">
-            <span className="h-px w-8 bg-[#FFC400]" /> What We Do
+            <span className="h-px w-8 bg-[#FFC400]" /> Popular Google Business Profile Services
           </span>
           <h2 className="mt-4 font-display font-extrabold text-[#071B4D] text-4xl lg:text-5xl">
-            Premium Services Built For <span className="text-yellow-gradient">Real Growth</span>
+            Popular Google Business Profile Services
           </h2>
-          <p className="mt-5 text-slate-600 text-lg">
-            Eight focused services, one growth engine — built around the way local businesses
-            actually win customers.
+          <p className="mt-3 font-display font-extrabold text-[#FFB000] text-xl">
+            Everything you need to verify, recover, optimize, and grow your Google Business Profile.
+          </p>
+          <p className="mt-5 text-slate-600 text-lg max-w-2xl mx-auto leading-relaxed">
+            Fast, reliable, and Google-compliant services designed to help businesses improve
+            visibility, verification, and local growth.
           </p>
         </Reveal>
 
-        <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {SERVICES.map((s, i) => (
+        <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+          {QUICK_SERVICES.map((s, i) => (
             <motion.div
               key={s.title}
               initial={{ opacity: 0, y: 32 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, delay: (i % 4) * 0.08, ease: [0.22, 1, 0.36, 1] }}
-              whileHover={{ y: -8 }}
-              className="group relative rounded-2xl bg-white p-6 border border-slate-100 hover:border-[#FFC400]/40 hover:shadow-premium transition-all"
+              whileHover={{ y: -6 }}
+              className="group relative rounded-3xl bg-white p-6 border border-slate-100 hover:border-[#FFC400]/40 hover:shadow-premium transition-all flex flex-col justify-between h-full"
             >
-              <div className="absolute inset-x-0 top-0 h-1 bg-yellow-gradient rounded-t-2xl scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500" />
-              <div className="h-12 w-12 rounded-2xl bg-yellow-gradient grid place-items-center shadow-yellow group-hover:rotate-6 transition-transform">
-                <s.icon size={20} className="text-[#071B4D]" />
+              <div>
+                <div className="h-14 w-14 rounded-full bg-[#071B4D] flex items-center justify-center text-white mb-6 group-hover:scale-105 transition-transform">
+                  <s.icon size={22} className="text-[#FFC400]" />
+                </div>
+                <h3 className="font-display font-extrabold text-[#071B4D] text-base leading-snug tracking-tight">
+                  {s.title}
+                </h3>
+                <div className="mt-2 text-xs text-slate-400 font-semibold uppercase tracking-wider">
+                  Starting From{" "}
+                  <span className="text-[#071B4D] font-extrabold text-sm normal-case">
+                    {s.price.replace("Starting From ", "")}
+                  </span>
+                </div>
+                <ul className="mt-5 space-y-3">
+                  {s.features.map((feat) => (
+                    <li
+                      key={feat}
+                      className="flex items-start gap-2.5 text-slate-600 text-xs font-medium"
+                    >
+                      <span className="h-1.5 w-1.5 rounded-full bg-[#FFC400] shrink-0 mt-1.5" />
+                      <span className="leading-tight">{feat}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <h3 className="mt-5 font-display font-extrabold text-[#071B4D] text-base leading-snug">
-                {s.title}
-              </h3>
-              <p className="mt-2 text-slate-600 text-sm leading-relaxed">{s.desc}</p>
-              <div className="mt-4 inline-flex items-center gap-1 text-[#0B2A75] text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity">
-                Learn more <ArrowRight size={12} />
+              <div className="mt-8 grid grid-cols-2 gap-2.5 pt-4 border-t border-slate-50">
+                <button
+                  onClick={() => triggerFormModal(`Quick GMB Service - ${s.title} (Learn More)`)}
+                  className="px-3 py-2.5 rounded-full bg-slate-100 text-[#071B4D] hover:bg-slate-200 text-[10px] font-bold tracking-wider uppercase transition-all cursor-pointer text-center"
+                >
+                  Learn More
+                </button>
+                <button
+                  onClick={() => triggerFormModal(`Quick GMB Service - ${s.title} (WhatsApp)`)}
+                  className="px-3 py-2.5 rounded-full bg-[#071B4D] text-[#FFC400] hover:bg-[#0B2A75] text-[10px] font-bold tracking-wider uppercase transition-all cursor-pointer text-center flex items-center justify-center gap-1"
+                >
+                  <MessageCircle size={12} className="text-[#22C55E]" /> WhatsApp
+                </button>
               </div>
             </motion.div>
           ))}
