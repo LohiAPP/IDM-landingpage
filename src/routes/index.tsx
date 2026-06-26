@@ -595,12 +595,27 @@ function Hero({ triggerFormModal }: { triggerFormModal: (context: string) => voi
     <section
       id="home"
       ref={ref}
-      className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 bg-primary-gradient overflow-hidden"
+      className="relative pt-24 pb-12 lg:pt-32 lg:pb-16 bg-primary-gradient overflow-hidden"
     >
       <div className="absolute inset-0 grid-pattern opacity-50" />
       <div className="absolute inset-0 radial-glow" />
       <motion.div style={{ y, opacity }} className="relative mx-auto max-w-7xl px-5 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-14 items-start">
+        {/* Floating Google Business Profile Logo */}
+        <motion.img
+          src="/assets/gmb-logo.png"
+          alt="Google Business Profile Logo"
+          className="absolute pointer-events-none z-0 w-[100px] md:w-[130px] lg:w-[190px] xl:w-[220px] left-[82%] top-[38%] md:left-[85%] md:top-[35%] lg:left-[51%] lg:top-[30%] xl:left-[52%] xl:top-[28%] -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_15px_35px_rgba(59,130,246,0.3)] filter"
+          animate={{
+            y: [0, -10, 0],
+          }}
+          transition={{
+            duration: 4.5,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+
+        <div className="grid lg:grid-cols-2 gap-14 items-start relative z-10">
           {/* Left */}
           <div>
             <Reveal>
@@ -697,20 +712,20 @@ function HeroMockup() {
         </div>
 
         {/* Details Card under the image */}
-        <div className="mt-4 bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-sm text-left">
+        <div className="mt-5 bg-gradient-to-br from-[#BF953F] via-[#FCF6BA] to-[#B38728] border border-[#BF953F]/40 rounded-3xl p-5 shadow-[0_15px_40px_-5px_rgba(191,149,63,0.35)] text-left">
           <div className="flex items-center gap-1.5">
-            <div className="h-1.5 w-1.5 rounded-full bg-[#FFC400] animate-pulse" />
-            <span className="text-[8px] font-extrabold text-[#FFC400] uppercase tracking-[0.2em]">
+            <div className="h-1.5 w-1.5 rounded-full bg-[#071B4D] animate-pulse" />
+            <span className="text-[8px] font-extrabold text-[#071B4D] uppercase tracking-[0.2em]">
               GMB Specialist
             </span>
           </div>
-          <h4 className="mt-1 font-display font-extrabold text-white text-sm sm:text-base leading-tight">
+          <h4 className="mt-1.5 font-display font-extrabold text-[#071B4D] text-sm sm:text-base leading-tight">
             Bantaram Sanvika
           </h4>
-          <p className="text-[9px] text-white/50 font-bold uppercase tracking-wider mt-0.5">
+          <p className="text-[9px] text-[#071B4D]/75 font-extrabold uppercase tracking-wider mt-0.5">
             GMB SEO Specialist
           </p>
-          <p className="mt-2 text-white/80 text-[10px] leading-relaxed">
+          <p className="mt-2 text-[#071B4D] text-[10.5px] font-semibold leading-relaxed">
             With 5+ years of experience, I have helped 1,500+ business owners improve their Google Business Profiles, generate organic leads, and increase revenue through proven Local SEO strategies.
           </p>
         </div>
@@ -730,7 +745,7 @@ function TrustBar() {
     { icon: Shield, label: "No Long-Term Contracts" },
   ];
   return (
-    <section className="py-10 bg-[#F8FAFC] border-y border-slate-200/60">
+    <section className="py-6 bg-[#F8FAFC] border-y border-slate-200/60">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
           {items.map((it, i) => (
@@ -756,7 +771,7 @@ function TrustBar() {
 
 function WhoWeAre() {
   return (
-    <section className="py-24 lg:py-32 bg-white">
+    <section className="py-12 lg:py-16 bg-white">
       <div className="mx-auto max-w-7xl px-5 lg:px-8 grid lg:grid-cols-2 gap-16 items-center">
         <Reveal>
           <div>
@@ -796,9 +811,10 @@ function WhoWeAre() {
               <div className="relative grid grid-cols-2 gap-4">
                 {[
                   { v: "500+", l: "Active Clients", icon: Users },
-                  { v: "8+ Yrs", l: "Experience", icon: Award },
+                  { v: "7+ Yrs", l: "Experience", icon: Award },
                   { v: "32+", l: "Industries Served", icon: Briefcase },
-                  { v: "₹2Cr+", l: "Ad Spend Managed", icon: BarChart3 },
+                  { v: "₹7Cr+", l: "Ad Spend Managed", icon: BarChart3 },
+                  { v: "1000+", l: "Trusted Clients", icon: BarChart3 },
                 ].map((s, i) => (
                   <motion.div
                     key={s.l}
@@ -819,8 +835,8 @@ function WhoWeAre() {
                   </motion.div>
                 ))}
               </div>
-              <div className="relative mt-6 p-5 rounded-2xl bg-yellow-gradient">
-                <p className="text-[#071B4D] font-display font-extrabold text-lg leading-snug">
+              <div className="relative mt-6 p-5 rounded-2xl bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#BAE6FD]">
+                <p className="text-black font-display font-extrabold text-lg leading-snug">
                   "We don't just build your presence. We build your growth."
                 </p>
               </div>
@@ -883,7 +899,7 @@ const QUICK_SERVICES = [
 
 function Services({ triggerFormModal }: { triggerFormModal: (context: string) => void }) {
   return (
-    <section id="services" className="py-24 lg:py-32 bg-[#F8FAFC] relative overflow-hidden">
+    <section id="services" className="py-12 lg:py-16 bg-[#F8FAFC] relative overflow-hidden">
       <div className="absolute top-0 right-0 w-96 h-96 bg-[#FFC400]/10 rounded-full blur-3xl" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#0B2A75]/10 rounded-full blur-3xl" />
       <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
@@ -891,7 +907,7 @@ function Services({ triggerFormModal }: { triggerFormModal: (context: string) =>
           <span className="inline-flex items-center gap-2 text-[11px] font-bold tracking-[0.2em] text-[#0B2A75] uppercase">
             <span className="h-px w-8 bg-[#FFC400]" /> Popular Google Business Profile Services
           </span>
-          <h2 className="mt-4 font-display font-extrabold text-[#071B4D] text-4xl lg:text-5xl">
+          <h2 className="mt-4 font-display font-extrabold text-black text-3xl sm:text-4xl lg:text-5xl inline-block bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#BAE6FD] px-6 py-4 rounded-2xl shadow-sm border border-[#BAE6FD]/40">
             Popular Google Business Profile Services
           </h2>
           <p className="mt-3 font-display font-extrabold text-[#FFB000] text-xl">
@@ -912,7 +928,7 @@ function Services({ triggerFormModal }: { triggerFormModal: (context: string) =>
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, delay: (i % 4) * 0.08, ease: [0.22, 1, 0.36, 1] }}
               whileHover={{ y: -6 }}
-              className="group relative rounded-3xl bg-white p-6 border border-slate-100 hover:border-[#FFC400]/40 hover:shadow-premium transition-all flex flex-col justify-between h-full"
+              className="group relative rounded-3xl bg-white p-6 border border-slate-100 hover:border-[#0B2A75]/50 hover:shadow-premium transition-all duration-300 flex flex-col justify-between h-full"
             >
               <div>
                 <div className="h-14 w-14 rounded-full bg-[#071B4D] flex items-center justify-center text-white mb-6 group-hover:scale-105 transition-transform">
@@ -921,7 +937,7 @@ function Services({ triggerFormModal }: { triggerFormModal: (context: string) =>
                 <h3 className="font-display font-extrabold text-[#071B4D] text-base leading-snug tracking-tight">
                   {s.title}
                 </h3>
-                <div className="mt-2 text-xs text-slate-400 font-semibold uppercase tracking-wider">
+                <div className="mt-2 text-xs text-slate-900 font-extrabold uppercase tracking-wider">
                   Starting From{" "}
                   <span className="text-[#071B4D] font-extrabold text-sm normal-case">
                     {s.price.replace("Starting From ", "")}
@@ -931,7 +947,7 @@ function Services({ triggerFormModal }: { triggerFormModal: (context: string) =>
                   {s.features.map((feat) => (
                     <li
                       key={feat}
-                      className="flex items-start gap-2.5 text-slate-600 text-xs font-medium"
+                      className="flex items-start gap-2.5 text-black text-xs font-bold"
                     >
                       <span className="h-1.5 w-1.5 rounded-full bg-[#FFC400] shrink-0 mt-1.5" />
                       <span className="leading-tight">{feat}</span>
@@ -976,7 +992,7 @@ const WHY_ROWS = [
 
 function WhyUs() {
   return (
-    <section className="py-24 lg:py-32 bg-white">
+    <section className="py-12 lg:py-16 bg-white">
       <div className="mx-auto max-w-6xl px-5 lg:px-8">
         <Reveal className="text-center max-w-2xl mx-auto">
           <span className="inline-flex items-center gap-2 text-[11px] font-bold tracking-[0.2em] text-[#0B2A75] uppercase">
@@ -1069,7 +1085,7 @@ function Process() {
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start 80%", "end 30%"] });
   const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
   return (
-    <section id="process" className="py-24 lg:py-32 bg-[#071B4D] relative overflow-hidden">
+    <section id="process" className="py-12 lg:py-16 bg-[#071B4D] relative overflow-hidden">
       <div className="absolute inset-0 grid-pattern opacity-30" />
       <div className="relative mx-auto max-w-6xl px-5 lg:px-8">
         <Reveal className="text-center max-w-2xl mx-auto">
@@ -1384,7 +1400,7 @@ const TRUST_ITEMS = [
 
 function Packages({ triggerFormModal }: { triggerFormModal: (context: string) => void }) {
   return (
-    <section id="packages" className="py-24 lg:py-32 bg-[#F8FAFC]">
+    <section id="packages" className="py-12 lg:py-16 bg-[#F8FAFC]">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         {/* Header Section */}
         <Reveal className="text-center max-w-3xl mx-auto">
@@ -1540,7 +1556,7 @@ function Results() {
     { v: 150, suffix: "%", label: "Quality Leads", icon: Target },
   ];
   return (
-    <section className="py-24 lg:py-32 bg-primary-gradient relative overflow-hidden">
+    <section className="py-12 lg:py-16 bg-primary-gradient relative overflow-hidden">
       <div className="absolute inset-0 grid-pattern opacity-30" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#FFC400]/10 rounded-full blur-3xl" />
       <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
@@ -1624,7 +1640,7 @@ function Testimonials() {
     return () => clearInterval(t);
   }, []);
   return (
-    <section id="testimonials" className="py-24 lg:py-32 bg-white relative overflow-hidden">
+    <section id="testimonials" className="py-12 lg:py-16 bg-white relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-[#F8FAFC] via-white to-[#F8FAFC]" />
       <div className="relative mx-auto max-w-5xl px-5 lg:px-8">
         <Reveal className="text-center max-w-2xl mx-auto">
@@ -1724,7 +1740,7 @@ const FAQS = [
 
 function FAQSection() {
   return (
-    <section id="faq" className="py-24 lg:py-32 bg-white">
+    <section id="faq" className="py-12 lg:py-16 bg-white">
       <div className="mx-auto max-w-4xl px-5 lg:px-8">
         <Reveal className="text-center max-w-2xl mx-auto">
           <span className="inline-flex items-center gap-2 text-[11px] font-bold tracking-[0.2em] text-[#0B2A75] uppercase">
@@ -1778,7 +1794,7 @@ function FinalCTA({ triggerFormModal }: { triggerFormModal: (context: string) =>
   ];
 
   return (
-    <section id="contact" className="py-20 lg:py-28 bg-[#F8FAFC]">
+    <section id="contact" className="py-12 lg:py-16 bg-[#F8FAFC]">
       <div className="mx-auto max-w-6xl px-5 lg:px-8">
         <Reveal>
           <div className="relative rounded-[2.5rem] bg-primary-gradient overflow-hidden p-10 lg:p-16 shadow-premium">
