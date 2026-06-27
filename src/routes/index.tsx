@@ -591,6 +591,15 @@ function Hero({ triggerFormModal }: { triggerFormModal: (context: string) => voi
   const y = useTransform(scrollYProgress, [0, 1], [0, 120]);
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0.2]);
 
+  // Disable parallax y-shift on mobile to prevent layout overflows and overlaps
+  const [isMobile, setIsMobile] = useState(true);
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   return (
     <section
       id="home"
@@ -599,7 +608,7 @@ function Hero({ triggerFormModal }: { triggerFormModal: (context: string) => voi
     >
       <div className="absolute inset-0 grid-pattern opacity-50" />
       <div className="absolute inset-0 radial-glow" />
-      <motion.div style={{ y, opacity }} className="relative mx-auto max-w-7xl px-5 lg:px-8">
+      <motion.div style={isMobile ? { opacity } : { y, opacity }} className="relative mx-auto max-w-7xl px-5 lg:px-8">
         {/* Floating Google Business Profile Logo (Desktop only) */}
         <motion.img
           src="/assets/gmb-logo.png"
@@ -767,12 +776,12 @@ function TrustBar() {
             <Reveal key={it.label} delay={i * 0.06}>
               <motion.div
                 whileHover={{ y: -4 }}
-                className="flex items-center gap-3 bg-white rounded-2xl px-4 py-4 border border-slate-100 hover:shadow-premium transition-all h-full"
+                className="flex items-center gap-2 sm:gap-3 bg-white rounded-2xl px-3 py-3 sm:px-4 sm:py-4 border border-slate-100 hover:shadow-premium transition-all h-full"
               >
                 <div className="h-11 w-11 rounded-xl bg-yellow-gradient grid place-items-center shrink-0">
                   <it.icon size={18} className="text-[#071B4D]" />
                 </div>
-                <span className="text-sm font-bold text-[#071B4D] leading-tight">{it.label}</span>
+                <span className="text-[11px] sm:text-xs lg:text-sm font-bold text-[#071B4D] leading-tight">{it.label}</span>
               </motion.div>
             </Reveal>
           ))}
@@ -1622,15 +1631,15 @@ function Results() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: i * 0.1 }}
               whileHover={{ y: -8 }}
-              className="rounded-3xl bg-white/[0.04] border border-white/10 backdrop-blur p-7 text-center"
+              className="rounded-3xl bg-white/[0.04] border border-white/10 backdrop-blur p-4 sm:p-7 text-center"
             >
               <div className="mx-auto h-12 w-12 rounded-2xl bg-yellow-gradient grid place-items-center shadow-yellow">
                 <s.icon size={20} className="text-[#071B4D]" />
               </div>
-              <div className="mt-5 font-display font-extrabold text-white text-5xl lg:text-6xl tracking-tight">
+              <div className="mt-5 font-display font-extrabold text-white text-3xl sm:text-4xl lg:text-6xl tracking-tight">
                 +<Counter to={s.v} suffix={s.suffix} />
               </div>
-              <div className="mt-2 text-white/70 font-semibold text-sm tracking-wide uppercase">
+              <div className="mt-2 text-white/70 font-semibold text-[10.5px] sm:text-xs lg:text-sm tracking-wide uppercase">
                 {s.label}
               </div>
             </motion.div>
@@ -1829,8 +1838,8 @@ function FinalCTA({ triggerFormModal }: { triggerFormModal: (context: string) =>
     {
       icon: MapPin,
       l: "Visit",
-      v: "Villa no-19, MRO Colony, Shamshabad, Hyderabad",
-      href: "https://maps.google.com/?q=Villa+no-19,+mro+colony,+H.no-+11-243/2,+railway+station+road,+opposite+ESI+dispensary,+Shamshabad,+Hyderabad,+Telangana+501218",
+      v: "First Floor, 23-98/A, beside Sri Sai Jyothsna Mess, Madhura Nagar, Shamshabad, Hyderabad, Telangana 501218",
+      href: "https://maps.google.com/?q=First+Floor,+23-98/A,+beside+Sri+Sai+Jyothsna+Mess,+Madhura+Nagar,+Shamshabad,+Hyderabad,+Telangana+501218",
     },
   ];
 
@@ -1889,7 +1898,7 @@ function FinalCTA({ triggerFormModal }: { triggerFormModal: (context: string) =>
                         <div className="text-[10px] uppercase tracking-wider text-white/60 font-semibold">
                           {c.l}
                         </div>
-                        <div className="text-white font-bold">{c.v}</div>
+                        <div className="text-white font-bold text-sm sm:text-base leading-snug">{c.v}</div>
                       </div>
                     </Component>
                   );
