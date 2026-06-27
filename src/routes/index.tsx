@@ -600,11 +600,11 @@ function Hero({ triggerFormModal }: { triggerFormModal: (context: string) => voi
       <div className="absolute inset-0 grid-pattern opacity-50" />
       <div className="absolute inset-0 radial-glow" />
       <motion.div style={{ y, opacity }} className="relative mx-auto max-w-7xl px-5 lg:px-8">
-        {/* Floating Google Business Profile Logo */}
+        {/* Floating Google Business Profile Logo (Desktop only) */}
         <motion.img
           src="/assets/gmb-logo.png"
           alt="Google Business Profile Logo"
-          className="absolute pointer-events-none z-20 w-[150px] md:w-[200px] lg:w-[280px] xl:w-[320px] left-[82%] top-[30%] md:left-[85%] md:top-[27%] lg:left-[45%] lg:top-[42%] xl:left-[46%] xl:top-[41%] -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_15px_35px_rgba(59,130,246,0.3)] filter"
+          className="hidden lg:block absolute pointer-events-none z-20 w-[280px] xl:w-[320px] lg:left-[45%] lg:top-[42%] xl:left-[46%] xl:top-[41%] -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_15px_35px_rgba(59,130,246,0.3)] filter"
           animate={{
             y: [0, -10, 0],
           }}
@@ -701,6 +701,21 @@ function HeroMockup() {
       {/* Background glow behind card for premium feel */}
       <div className="absolute -inset-4 bg-yellow-gradient opacity-10 blur-3xl rounded-[2.5rem]" />
 
+      {/* Floating Google Business Profile Logo (Mobile/Tablet only) */}
+      <motion.img
+        src="/assets/gmb-logo.png"
+        alt="Google Business Profile Logo"
+        className="absolute lg:hidden pointer-events-none z-20 w-[95px] md:w-[130px] left-4 top-4 md:left-8 md:top-8 drop-shadow-[0_10px_25px_rgba(59,130,246,0.25)] filter"
+        animate={{
+          y: [0, -8, 0],
+        }}
+        transition={{
+          duration: 4.5,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+
       <div className="flex flex-col relative z-10">
         {/* Portrait Image */}
         <div className="relative rounded-3xl overflow-hidden border border-white/20 bg-white shadow-premium">
@@ -726,7 +741,7 @@ function HeroMockup() {
             GMB SEO Specialist
           </p>
           <p className="mt-2 text-[#071B4D] text-[10.5px] font-semibold leading-relaxed">
-            With 5+ years of experience, I have helped 1,500+ business owners improve their Google Business Profiles, generate organic leads, and increase revenue through proven Local SEO strategies.
+            With 7+ years of experience, I have helped 10,000+ business owners improve their Google Business Profiles, generate organic leads, and increase revenue through proven Local SEO strategies.
           </p>
         </div>
       </div>
