@@ -604,7 +604,7 @@ function Hero({ triggerFormModal }: { triggerFormModal: (context: string) => voi
         <motion.img
           src="/assets/gmb-logo.png"
           alt="Google Business Profile Logo"
-          className="absolute pointer-events-none z-0 w-[100px] md:w-[130px] lg:w-[190px] xl:w-[220px] left-[82%] top-[38%] md:left-[85%] md:top-[35%] lg:left-[51%] lg:top-[30%] xl:left-[52%] xl:top-[28%] -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_15px_35px_rgba(59,130,246,0.3)] filter"
+          className="absolute pointer-events-none z-20 w-[150px] md:w-[200px] lg:w-[280px] xl:w-[320px] left-[82%] top-[30%] md:left-[85%] md:top-[27%] lg:left-[45%] lg:top-[42%] xl:left-[46%] xl:top-[41%] -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_15px_35px_rgba(59,130,246,0.3)] filter"
           animate={{
             y: [0, -10, 0],
           }}
