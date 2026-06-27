@@ -794,7 +794,33 @@ function WhoWeAre() {
               <span className="h-px w-8 bg-[#FFC400]" /> Who We Are
             </span>
             <h2 className="mt-4 font-display font-extrabold text-[#071B4D] text-4xl lg:text-5xl leading-tight">
-              Your <span className="text-yellow-gradient">Growth Partner</span> In The Digital World
+              Your{" "}
+              <span className="text-yellow-gradient inline-flex">
+                {"Growth Partner".split("").map((char, i) => (
+                  <motion.span
+                    key={i}
+                    custom={i}
+                    variants={{
+                      hidden: { opacity: 0, y: 5 },
+                      visible: (i: number) => ({
+                        opacity: 1,
+                        y: 0,
+                        transition: {
+                          delay: i * 0.08,
+                          duration: 0.25,
+                          ease: "easeOut",
+                        },
+                      }),
+                    }}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                  >
+                    {char === " " ? "\u00A0" : char}
+                  </motion.span>
+                ))}
+              </span>{" "}
+              In The Digital World
             </h2>
             <p className="mt-6 text-slate-600 text-lg leading-relaxed">
               We don't just offer services — we build partnerships. At IDM Smart Tech, we step in as
